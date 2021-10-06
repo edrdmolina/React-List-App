@@ -1,0 +1,70 @@
+.NewListForm {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.Title-container {
+    height: 20%;
+    border-bottom: white dashed 4px;
+}
+
+.Title-container input {
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: center;
+    line-height: 2rem;
+    color: white;
+}
+
+.NewListForm-buttons {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 80%;
+    width: 100%;
+}
+
+.NewListForm-buttons button {
+    width: 75%;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    background: none;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.25) 2px 2px 2px;
+}
+
+.NewListForm-buttons button:hover {
+    transform: translate(2px, 2px);
+}
+.NewListForm-buttons button:active {
+    transform: translate(2px, 2px);
+}
+
+.Add-button {
+    border: white solid 1px;
+    color: white;
+}
+
+.Add-button:hover {
+    background-color: rgba(245, 245, 245, 0.3);
+}
+.Add-button:active {
+    background-color: rgba(245, 245, 245, 0.3);
+}
+
+.Cancel-button {
+    border: red solid 1px;
+    color: red;
+}
+
+.Cancel-button:hover {
+    background-color: rgba(255, 0, 0, 1);
+    color: white;
+}
+.Cancel-button:active {
+    background-color: rgba(255, 0, 0, 1);
+    color: white
+}

@@ -1,0 +1,44 @@
+.Listbox {
+    height: 250px;
+    width: 250px;
+
+    border-radius: 10px;
+    margin: 2rem;
+    text-decoration: none;
+    color: white;
+    background-color: rgba(255, 255, 255, 0.108);
+    box-shadow: rgba(0, 0, 0, 0.25) 5px 5px 8px;
+}
+
+.Listbox:hover {
+    text-decoration: none;
+    color: white;
+    transform: scale(1.05);
+}
+
+.Title {
+    text-align: center;
+    border-bottom: dashed white 4px;
+    text-transform: uppercase;
+    height: 20%;
+    margin: 0;
+    padding-top: .5rem;
+    font-size: 28x;
+    overflow-wrap: break-word;
+}
+
+.Preview {
+    height: 80%;
+    margin: 0;
+    padding-top: 1.25rem;
+    margin-left: 1rem;
+}
+
+.Preview-item {
+    font-size: 20px;
+}
+
+.checked {
+    text-decoration: line-through;
+    text-decoration-thickness: 3px;
+}

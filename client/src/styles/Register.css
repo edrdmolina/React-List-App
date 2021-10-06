@@ -1,0 +1,130 @@
+.Register {
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Register h1 {
+    color: white;
+    margin: 2rem 0;
+}
+
+.Form {
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.25);
+    width: 500px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.Input-group {
+    display: flex;
+    flex-direction: column;
+    margin: 1rem 0;
+    width: 60%;
+}
+
+.Input-group label {
+    color: white;
+}
+.Input-group .label {
+    color: white;
+}
+
+.Input-group input {
+    border-radius: 5px;
+    border: 3px rgba(137, 1, 186, 0) solid;
+}
+.Input-group .input {
+    border-radius: 5px;
+    border: 3px rgba(137, 1, 186, 0) solid;
+}
+
+.Input-group input:focus {
+    outline: none;
+    border: 3px rgba(137, 1, 186, 0.5) solid;
+}
+
+.Form-footer {
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    margin: 1rem 0;
+}
+
+.Register-btn {
+    outline: none;
+    border: 2px solid rgba(137, 1, 186, 0.5);
+    border-radius: 5px;
+    padding: .33rem .66rem;
+    background-color: rgba(255, 255, 255, 0);
+    color: rgba(137, 1, 186, 0.5);
+    margin-left: auto;
+}
+
+.Register-btn:hover {
+    background-color: rgba(137, 1, 186, 0.5);
+    color: white;
+    border: 2px solid rgba(137, 1, 186, 0);
+}
+
+.Disabled {
+    background-color: rgba(75, 75, 75, 0.534);
+}
+
+.Disabled:hover {
+    cursor: not-allowed;
+    background-color: rgba(75, 75, 75, 0.534);
+    border: 2px solid rgba(137, 1, 186, 0.5);
+    color: rgba(137, 1, 186, 0.5);
+}
+
+.login-message {
+    width: 500px;
+    text-align: center;
+    margin: 2rem 0;
+    color: white;
+}
+
+.login-message a {
+    color: white;
+    text-decoration: none;
+}
+
+.login-message a:hover {
+    text-decoration: underline;
+}
+
+/* `sm` applies to x-small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) { 
+    .Form {
+        width: 90%;
+    }
+
+    .Input-group {
+        width: 90%;
+    }
+
+    .Form-footer {
+        width: 90%;
+    }
+
+    .login-message {
+        width: 90%;
+    }
+
+    .login-message a {
+        text-decoration: underline;
+    }
+}
+
+
+
+
+
+
+
+
+

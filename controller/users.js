@@ -1,0 +1,167 @@
+const User = require('../models/user');
+const util = require('util');
+const crypto = require('crypto');
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+module.exports = {
+    // USERS
+    async getUserData(req, res, next) {
+        console.log('PINGED GET USER DATA ROUTE')
+        return res.status(200).json({
+            user: req.user,
+            message: 'PINGED GET USER DATA ROUTE'
+        })
+    },
+    async registerUser(req, res, next) {
+        console.log('PINGED POST FOR REGISTER ROUTE')
+        const { password, confirmPassword } = req.body
+        if (password != confirmPassword) {
+            return res.status(400).json({
+                success: false,
+                message: 'Passwords do not match'
+            })
+        }
+
+        const user = await User.register(new User(req.body), req.body.password);
+        req.login(user, err => {
+            if(err) return next(err);
+            delete req.session.returnTo;
+        })
+        return res.status(200).json({
+            success: true,
+            redirectUrl: '/',
+        })
+    },
+    async updateUser(req, res, next) {
+        console.log('PINGED UPDATE USER ROUTE')
+        const { user } = res.locals;
+        const { username, email } = req.body;
+        if (username) user.username = username;
+        if (email) user.email = email;
+        await user.save();
+        const login = util.promisify(req.login.bind(req));
+        await login(user);
+                
+        return res.status(200).json({
+            message: 'Updated user information.', 
+        })
+    },
+    async deleteUser(req, res, next) {
+        const message = 'PINGED DELETE USER ROUTE';
+        console.log(message);
+        const { user } = res.locals;
+        await User.findByIdAndDelete({ _id: user._id })
+        const redirectUrl = '/';
+        return res.status(200).json({
+            message, redirectUrl
+        })
+
+    },
+    async postLogin(req, res, next) {
+        console.log('PINGED LOGIN ROUTE')
+        const { username, password } = req.body;
+        const { user, error } = await User.authenticate()(username, password)
+        if (!user && error) {
+            return res.status(200).json({ error })
+        }
+        req.login(user, function(err) {
+            if (err) {
+                return res.status(200).json({ error })
+            }
+            return res.status(200).json({
+                success: true,
+                redirectUrl: '/',
+            })
+        })
+    },
+    async getLogout(req, res, next) {
+        console.log('PINGED LOGOUT ROUTE');
+        req.logout();
+        return res.status(200).json({
+            message: 'PINGED BACKEND LOGOUT ROUTE',
+        })
+    },
+    async reqResetToken(req, res, next) {
+        const message = 'PINGED REQ RESET TOKEN ROUTE';
+        console.log(message);
+        const { email } = req.body;
+        // Search for user
+        const user = await User.findOne({ email })
+        if (!user) {
+            return res.status(200).json({
+                message, error: `Email does not exist.`
+            })
+        }
+        // Create secret token
+        const token = crypto.randomBytes(20).toString('hex');
+        // Add token to user
+        user.resetPasswordToken = token;
+        user.resetPasswordExpires = Date.now() + 1800000;
+        await user.save()
+
+        // SEND EMAIL
+        const msg = {
+            to: email,
+            from: 'React-List Admin<edrdmolina11@gmail.com>',
+            subject: 'React-List App - Forgot / Reset Password',
+            text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.
+            Please click on the following link, or copy and paste it into your browser to complete the
+            process: http://localhost:3000/reset-pw/${token} If you did not request this, please ignore this email
+            and your password will remain unchanged.`.replace(/                /g, ''),
+        }
+        await sgMail.send(msg);
+        return res.status(200).json({
+            message, success: `Sent an email with a link to reset password`
+        })
+    },
+    async resetPw(req, res, next) {
+        const message = 'PINGED RESET PASSWORD ROUTE'
+        console.log(message)
+        console.log(req.body);
+        // Set variables
+        const { token, newPassword, confirmNewPassword } = req.body;
+
+        // Verify passwords match
+        if (newPassword !== confirmNewPassword) {
+            return res.status(200).json({
+                message, error: 'Passwords do not match!'
+            })
+        }
+
+        // Find user with token
+        const user = await User.findOne({ 
+            resetPasswordToken: token,
+            resetPasswordExpires: { $gt: Date.now() }
+        });
+        if (!user) {
+            return res.status(200).json({
+                message, error: `Token has expired`
+            })
+        }
+
+        await user.setPassword(newPassword);
+        user.resetPasswordToken = null;
+        user.resetPasswordExpires = null;
+
+        await user.save();
+
+        const login = util.promisify(req.login.bind(req));
+
+        await login(user);
+
+        const msg = {
+            to: user.email,
+            from: 'React-List Admin<edrdmolina11@gmail.com>',
+            subject: 'React-List App - Forgot / Reset Password',
+            text: `This email is to confirm that the password of your account has been changed.
+            If you did not make this change please reply and notify us at once!`.replace(/                    /g, ''),
+        }
+        await sgMail.send(msg);
+
+        return res.status(200).json({ 
+            message, success: 'Successfully changed password.',
+            redirectUrl: '/'
+        });
+    },
+}

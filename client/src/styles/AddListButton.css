@@ -1,0 +1,21 @@
+.AddList-button {
+    height: 100%;
+    width: 100%;
+}
+
+.AddList-button h3 {
+    text-align: center;
+    border-bottom: dashed white 4px;
+    text-transform: uppercase;
+    height: 20%;
+    margin: 0;
+    padding-top: .5rem;
+    font-size: 28px;
+}
+
+.Plus {
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

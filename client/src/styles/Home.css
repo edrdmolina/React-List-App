@@ -1,0 +1,64 @@
+.Home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+}
+
+.Container {
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+    background-color: rgba(255, 255, 255, 0.25);
+    border-radius: 10px;
+    max-width: 500px;
+    min-width: 330px;
+    padding: 2rem;
+    margin-top: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.Container h1 {
+    font-size: 60px;
+}
+
+.Container p {
+    font-size: 18px;
+    text-align: center;
+    padding: 2rem;
+}
+
+.Buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 1rem;
+}
+
+.Buttons button {
+    border: 2px solid white;
+    background-color: rgba(255, 255, 255, 0);
+    color: white;
+    border-radius: 10px;
+    padding: .33rem .66rem;
+    transition: all 50ms linear;
+    text-transform: uppercase;
+}
+
+.Buttons button:hover {
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+    transform: translate(-2px, -2px);
+    background-color: rgba(255, 255, 255, .5);
+} 
+
+.Buttons button:active {
+    box-shadow: none;
+    transform: translate(1px, 1px);
+    background-color: rgba(255, 255, 255, .5);
+}
+
+@media (max-width: 576px) {
+    .Container {
+        width: 90%;
+    }
+}
