@@ -1,3 +1,11 @@
+.DeleteUserConfirmation-bg {
+    background-color: rgba(0, 0, 0, 0.25);
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0px;
+}
+
 .DeleteUserConfirmation {
     height: 143px;
     width: 330px;

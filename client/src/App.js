@@ -48,11 +48,9 @@ export class App extends Component {
   // Checks if the Component showing is the List component.
   // Is passed down through props on Routes then on to the individual list component.
   enteredList = (deleteListId) => {
-    console.log('is in a list route')
     this.setState({ isInList: true, deleteListId })
   }
   exitedList = () => {
-    console.log('exited list')
     this.setState({ isInList: false, deleteListId: '' })
   }
   

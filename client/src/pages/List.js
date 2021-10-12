@@ -72,7 +72,7 @@ export class List extends Component {
         }))
         // CHECK IN BACKEND
         const res = await axios.put(`api/check/${itemId}`);
-        console.log(res.data.message)
+        console.log(res.data)
     }
 
     // Delete checked items
@@ -128,7 +128,6 @@ export class List extends Component {
             )
         })
 
-        // console.log(this.state.list)
         return (
             <div className='List'>
                 <div className='Header'>

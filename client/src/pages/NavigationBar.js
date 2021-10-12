@@ -19,7 +19,6 @@ export class NavigationBar extends Component {
     deleteList = async () => {
         const { deleteListId } = this.props;
         const result = await axios.delete(`/api/${deleteListId}`);
-        console.log(result)
         window.location.href = result.data.redirectUrl
     }
 
@@ -54,7 +53,7 @@ export class NavigationBar extends Component {
                                    
                         <Nav className='push-right'>
                             { deleteList }
-                            <Nav.Link as={NavLink} to={`/user`} active className='push-right'>
+                            <Nav.Link as={NavLink} to={{ pathname:`user`, state: { user } }} active className='push-right'>
                                 User Settings
                             </Nav.Link>
                             <Nav.Link as={NavLink} to="/" onClick={this.logout} active className='push-right'>

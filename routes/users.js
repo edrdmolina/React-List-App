@@ -6,7 +6,7 @@ const users= require('../controller/users.js')
 
 // Middleware
 const {
-    catchAsync, isValidPassword, changePassword, isLoggedIn
+    catchAsync, isValidPassword, changePassword, isLoggedIn, registrationValidation
 } = require('../middleware')
 
 
@@ -17,7 +17,7 @@ router.post('/login', catchAsync(users.postLogin));
 router.get('/logout', catchAsync(users.getLogout));
 
 // POST Register User /register
-router.post('/register', catchAsync(users.registerUser));
+router.post('/register', catchAsync(registrationValidation), catchAsync(users.registerUser));
 // GET User data /getUser
 router.get('/getUser', isLoggedIn, catchAsync(users.getUserData));
 
@@ -39,7 +39,9 @@ router.put('/delete',
 // POST req reset token /forgot-pw
 router.post('/forgot-pw', catchAsync(users.reqResetToken))
 
-// POST reset password /reset-pw
+router.post('/verify-token', catchAsync(users.verifyResetToken));
+
+// POST reset password /api/users/reset-pw
 router.put('/reset-pw', catchAsync(users.resetPw))
 
 module.exports = router;

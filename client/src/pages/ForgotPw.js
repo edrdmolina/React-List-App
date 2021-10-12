@@ -1,60 +1,69 @@
 // Libraries
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
+
+// Components
+import Token from './components/Token';
+
+// Hooks
+import useChangeInput from "../hooks/useChangeInput";
 
 // Styles
 import '../styles/ForgotPw.css';
 
-export class ForgotPw extends Component {
-    constructor(props) {
-        super(props)
-    
-        this.state = {
-            email: '',
-            message: ''
-        }
-    }
-    
-    handleUserInput = e => {
-        const { value } = e.target;
-        this.setState({ [e.target.id]: value});
-    }
+function ForgotPw() {
+    // Initialize hooks
 
-    handleSubmit = async (e) => {
-        e.preventDefault()
-        const { email } = this.state;
+    // State
+    const [email, updateEmail, clearEmail] = useChangeInput('');
+    const [message, updateMessage] = useState('');
+    const [tokenInput, showToken] = useState(false)
+    const [isError, updateIsError] = useState(false);
+
+    async function handleSubmit(e) {
+        e.preventDefault();
         const input = { email };
-        console.log(input)
         const res = await axios.post('/api/users/forgot-pw', input);
-        console.log(res.data);
         if(res.data.error) {
-            return this.setState({ message: res.data.error })
+            updateMessage(res.data.error);
+            triggerError();
+            return;
         }
-        return this.setState({ message: res.data.success })
+        // RETURN TO TOKEN INPUT MESSAGE
+        updateMessage('')
+        clearEmail()
+        return showToken('true')
     }
 
-    render() {
-        const { email, message } = this.state;
-
-        return (
-            <div className='ForgotPw'>
-                <h1>RETRIEVE RESET TOKEN</h1>
-                
-                <form onSubmit={this.handleSubmit} className='Form'>
-                    <p className='forgot-message'>{message}</p>
-                    <div className='Input-group'>
-                        <label htmlFor='email'>Email</label>
-                        <input type='email' id='email' name='email' value={email} 
-                            onChange={this.handleUserInput}
-                        />
-                    </div>
-                    <div className='Form-footer'>
-                        <button type='submit' className='Token-btn'>Send Token</button>
-                    </div>
-                </form>
-            </div>
-        )
+    function triggerError() {
+        updateIsError(true);
+        setTimeout(() => {
+            updateIsError(false);
+        }, 1000);
+        clearEmail();
     }
+
+    return (
+        <div className='ForgotPw'>
+            <h1>RETRIEVE RESET TOKEN</h1>
+
+            <form onSubmit={handleSubmit} className={`Form ${isError ? 'shake' : null}`}>
+                <p className='forgot-message'>{message}</p>
+                <div className='Input-group'>
+                    <label htmlFor='email'>Email</label>
+                    <input type='email' id='email' name='email' value={email} 
+                        onChange={updateEmail}
+                    />
+                </div>
+                <div className='Form-footer'>
+                    <button type='submit' className='Token-btn'>Send Token</button>
+                </div>
+            </form>
+
+            { tokenInput ? ( <Token showToken={showToken} /> ) : ( null )}
+
+        </div>
+    )
 }
 
-export default ForgotPw
+export default ForgotPw;

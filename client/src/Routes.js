@@ -36,7 +36,7 @@ export class Routes extends Component {
                 <Route exact path='/forgot-pw'
                     render={ routeProps => <ForgotPw { ...routeProps } /> }
                 />
-                <Route exact path='/reset-pw/:token'
+                <Route exact path='/reset-pw'
                     render={ routeProps => <ResetPw { ...routeProps } /> }
                 />
                 <Route exact path='/User'

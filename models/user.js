@@ -29,7 +29,6 @@ UserSchema.post('findOneAndDelete', async function (doc) {
     
     if(doc) {
         doc.lists.forEach(async list => {
-            console.log(list)
             await List.findOneAndDelete(list)
         });
     }

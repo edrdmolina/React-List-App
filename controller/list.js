@@ -70,7 +70,6 @@ module.exports = {
     async getItems(req, res, next) {
         console.log('PINGED GET ITEMS ROUTE')
         const { listId } =  req.params;
-        console.log(listId)
 
         const list = await List.findById({ _id: listId })
             .populate({ 

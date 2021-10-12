@@ -1,88 +1,86 @@
 // Libraries
-import React, { Component } from "react";
+import React, { useState } from "react";
+import { useLocation } from 'react-router-dom'
 import axios from "axios";
+
+// Hooks
+import useChangeInput from "../hooks/useChangeInput";
 
 // Components 
 import PWConfirmation from './components/PWConfirmation';
 
 // Styles
 
+function ResetPw() {
+    // Initialize hooks
+    const location = useLocation();
 
-export class ResetPw extends Component {
-    constructor(props) {
-        super(props)
-    
-        this.state = {
-            newPassword: '',
-            confirmNewPassword: '',
-            message: ''
-        }
-    }
+    // State
+    const [newPassword, updateNewPassword, clearNewPassword] = useChangeInput('');  
+    const [confirmNewPassword, updateConfirmNewPassword, clearConfirmNewPassword] = useChangeInput('');
+    const [message, updateMessage] = useState('');
+    const { user } = location.state
 
-    handleUserInput = e => {
-        const { value } = e.target;
-        this.setState({ [e.target.id]: value});
-    }
-
-    handleSubmit = async (e) => {
+    async function handleSubmit(e) {
         e.preventDefault();
-        const { token } = this.props.match.params;
-        const { newPassword, confirmNewPassword } = this.state;
-        const input = { newPassword, confirmNewPassword, token };
-        const res = await axios.put(`/api/users/reset-pw`, input);
-        console.log(res.data)
-        const { message, success, error, redirectUrl } = res.data;
-        console.log(message);
-        if(error) {
-            return this.setState({ message: error });
+        const input = {
+            newPassword, confirmNewPassword, id: user._id
         }
 
-        this.setState({ message: success })
-        window.location.href = redirectUrl;
+        const res = await axios.put('/api/users/reset-pw', input);
+        const { success, error, redirectUrl } = res.data;
+
+        if (error) {
+            clearNewPassword();
+            clearConfirmNewPassword();
+            return updateMessage(error);
+        }
+
+        if (success) {
+            return window.location.href = redirectUrl;
+        }
+
+
 
     }
 
-    render() {
-
-        const { newPassword, confirmNewPassword } = this.state;
-
-        let isDisabled = true;
+    // Disables and enables save button
+    let isDisabled = true;
         
-        if (newPassword && confirmNewPassword && (newPassword === confirmNewPassword)) {
-            
-            isDisabled = false;
-        } else {
-            isDisabled = true;
-        }
-
-        return (
-            <div className='Login'>
-                <h1>RESET PW PAGE</h1>
-                <form onSubmit={this.handleSubmit} className='Form'>
-                    <div className='Input-group'>
-                        <label htmlFor='newPassword' className='label'>New Password</label>
-                        
-                        <input type='password' id='newPassword' value={newPassword} onChange={this.handleUserInput}
-                        />
-                    </div>
-                    <div className='Input-group'>
-                        <label htmlFor='confirmNewPassword'>Confirm New Password</label>
-                        <input type='password' id='confirmNewPassword' value={confirmNewPassword}
-                            onChange={this.handleUserInput}
-                        />
-                        <PWConfirmation password={newPassword} passwordConfirmation={confirmNewPassword} />
-                    </div>
-                    <div className='Form-footer'>
-                        <button 
-                            type='submit'
-                            className={`Register-btn ${isDisabled ? 'Disabled' : ''}`}
-                            disabled={isDisabled}
-                        >Save Changes</button>
-                    </div>
-                </form>
-            </div>
-        )
+    if (newPassword && confirmNewPassword && (newPassword === confirmNewPassword)) {
+        isDisabled = false;
+    } else {
+        isDisabled = true;
     }
+
+    return (
+        <div className='Login'>
+            <h1>RESET PW PAGE</h1>
+            <p>{message}</p>
+            <form onSubmit={handleSubmit} className='Form'>
+                <div className='Input-group'>
+                    <label htmlFor='newPassword' className='label'>New Password</label>
+                    
+                    <input type='password' id='newPassword' value={newPassword} onChange={updateNewPassword}
+                    />
+                </div>
+                <div className='Input-group'>
+                    <label htmlFor='confirmNewPassword'>Confirm New Password</label>
+                    <input type='password' id='confirmNewPassword' value={confirmNewPassword}
+                        onChange={updateConfirmNewPassword}
+                    />
+                    <PWConfirmation password={newPassword} passwordConfirmation={confirmNewPassword} />
+                </div>
+                <div className='Form-footer'>
+                    <button 
+                        type='submit'
+                        className={`Register-btn ${isDisabled ? 'Disabled' : ''}`}
+                        disabled={isDisabled}
+                    >Save Changes</button>
+                </div>
+            </form>
+        </div>
+    )
 }
 
-export default ResetPw
+export default ResetPw;

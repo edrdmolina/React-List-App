@@ -44,6 +44,34 @@ const middleware = {
         } 
         next();
     },
+    registrationValidation: async (req, res, next) => {
+        const { email, username, password, confirmPassword } = req.body;
+
+        // Check if passwords match
+        if (password != confirmPassword) {
+            return res.status(400).json({
+                success: false,
+                message: 'Passwords do not match'
+            })
+        }
+
+        // Check if email already exist
+        const emailValidation = await User.find({ email });
+        if (emailValidation.length) {
+            return res.status(200).json({
+                error: 'Email already exist!'
+            })
+        }
+
+        // Check if username already exist
+        const usernameValidation = await User.find({ username });
+        if (usernameValidation.length) {
+            return res.status(200).json({
+                error: 'Username already exist!'
+            })
+        }
+        next();
+    }
 }
 
 module.exports = middleware;

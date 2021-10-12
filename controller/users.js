@@ -1,7 +1,7 @@
 const User = require('../models/user');
 const util = require('util');
-const crypto = require('crypto');
 const sgMail = require('@sendgrid/mail');
+const { verify } = require('crypto');
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 module.exports = {
@@ -15,22 +15,17 @@ module.exports = {
     },
     async registerUser(req, res, next) {
         console.log('PINGED POST FOR REGISTER ROUTE')
-        const { password, confirmPassword } = req.body
-        if (password != confirmPassword) {
-            return res.status(400).json({
-                success: false,
-                message: 'Passwords do not match'
-            })
-        }
 
+        // Register new user
         const user = await User.register(new User(req.body), req.body.password);
-        req.login(user, err => {
-            if(err) return next(err);
+        req.login(user, error => {
+            if(error) return res.status(200).json({
+                error
+            })
             delete req.session.returnTo;
         })
         return res.status(200).json({
             success: true,
-            redirectUrl: '/',
         })
     },
     async updateUser(req, res, next) {
@@ -50,13 +45,13 @@ module.exports = {
     async deleteUser(req, res, next) {
         const message = 'PINGED DELETE USER ROUTE';
         console.log(message);
-        const { user } = res.locals;
+        const { user } = req.body;
         await User.findByIdAndDelete({ _id: user._id })
+        
         const redirectUrl = '/';
         return res.status(200).json({
             message, redirectUrl
         })
-
     },
     async postLogin(req, res, next) {
         console.log('PINGED LOGIN ROUTE')
@@ -94,7 +89,10 @@ module.exports = {
             })
         }
         // Create secret token
-        const token = crypto.randomBytes(20).toString('hex');
+        let token = '';
+        for (let i = 0; i < 6; i++) {
+            token += String(Math.floor(Math.random() * 10));
+        }
         // Add token to user
         user.resetPasswordToken = token;
         user.resetPasswordExpires = Date.now() + 1800000;
@@ -108,19 +106,38 @@ module.exports = {
             text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.
             Please click on the following link, or copy and paste it into your browser to complete the
             process: http://localhost:3000/reset-pw/${token} If you did not request this, please ignore this email
-            and your password will remain unchanged.`.replace(/                /g, ''),
+            and your password will remain unchanged. TOKEN: ${token}`.replace(/                /g, ''),
         }
         await sgMail.send(msg);
         return res.status(200).json({
             message, success: `Sent an email with a link to reset password`
         })
     },
+    async verifyResetToken(req, res, next) {
+        console.log('PINGED VERIFY RESET TOKEN');
+        const { token } = req.body;
+
+        // Find user with token
+        const user = await User.findOne({ 
+            resetPasswordToken: token,
+            resetPasswordExpires: { $gt: Date.now() }
+        });
+        // If no user return
+        if (!user) {
+            return res.status(200).json({
+                error: `Token does not exist or has expired`
+            })
+        }
+
+        return res.status(200).json({
+            token,
+            user
+        })
+    },
     async resetPw(req, res, next) {
         const message = 'PINGED RESET PASSWORD ROUTE'
-        console.log(message)
-        console.log(req.body);
         // Set variables
-        const { token, newPassword, confirmNewPassword } = req.body;
+        const { id, newPassword, confirmNewPassword } = req.body;
 
         // Verify passwords match
         if (newPassword !== confirmNewPassword) {
@@ -130,13 +147,10 @@ module.exports = {
         }
 
         // Find user with token
-        const user = await User.findOne({ 
-            resetPasswordToken: token,
-            resetPasswordExpires: { $gt: Date.now() }
-        });
+        const user = await User.findById(id);
         if (!user) {
             return res.status(200).json({
-                message, error: `Token has expired`
+                error: `User not found`
             })
         }
 

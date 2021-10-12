@@ -1,6 +1,10 @@
 // Libraries
-import React, { Component } from 'react';
+import React, { useState } from "react";
+import {useLocation} from 'react-router-dom'
 import axios from 'axios';
+
+// Hooks
+import useChangeInput from "../hooks/useChangeInput";
 
 // Components
 import DeleteUserConfirmation from './components/DeleteUserConfirmation';
@@ -10,122 +14,76 @@ import PWConfirmation from './components/PWConfirmation';
 import '../styles/Register.css';
 import '../styles/User.css';
 
-export class User extends Component {
-    constructor(props) {
-        super(props)
-    
-        this.state = {
-            user: {},
-            email: '',
-            username: '',
-            password: '',
-            confirmNewPassword: '',
-            newPassword: '',
-            emailLocked: true,
-            usernameLocked: true,
-            isDeleteConfirmation: false,
-            message: '',
-        }
+function User() {
+    // Initialize hooks
+    const location = useLocation();
+
+    // State
+    const { user } = location.state;
+    const [email, updateEmail] = useChangeInput(user.email);
+    const [username, updateUsername] = useChangeInput(user.username);
+    const [password, updatePassword, clearPassword] = useChangeInput('');
+    const [newPassword, updateNewPassword, clearNewPassword] = useChangeInput('');
+    const [confirmNewPassword, updateNewPWConfirmation, clearNewPWConfirmation] = useChangeInput('');
+    const [emailLocked, updateEmailLocked] = useState(true);
+    const [usernameLocked, updateUsernameLocked] = useState(true);
+    const [isDeleteConfirmation, updateIsDeleteConfirmation] = useState(false);
+    const [message, updateMessage] = useState('');
+
+    function handleSubmit(e) {
+        e.preventDefault();
+        updateUser();
     }
 
-    componentDidMount = () => {
-        this.getUserData();
+    function toggleEmailLock(e) {
+        e.preventDefault();
+        updateEmailLocked(!emailLocked);
     }
 
-    handleUserInput = e => {
-        const { value } = e.target;
-        this.setState({ [e.target.id]: value});
+    function toggleUsernameLock(e) {
+        e.preventDefault();
+        updateUsernameLocked(!usernameLocked);
     }
 
-    getUserData = async () => {
-        const res = await axios.get('/api/users/getUser');
-        if (res.data.error) {
-            return window.location.href = res.data.redirectUrl;
-        }
-        const { user } = res.data
-        this.setState({
-            user,
-            email: user.email,
-            username: user.username,
-        })
+    function handleDeleteUser(e) {
+        updateIsDeleteConfirmation(!isDeleteConfirmation)
     }
 
-    handleSubmit = e => {
-        e.preventDefault()
-        this.updateUser()
-    }
-
-    updateUser = async () => {
-        const { email, username, user, 
-            password, newPassword, confirmNewPassword 
-        } = this.state;
+    async function updateUser() {
         const input = { 
             email, username, user, 
             password, newPassword, confirmNewPassword 
         };
         const res = await axios.put('/api/users/updateUser', input);
-        console.log(res)
-        this.postUpdate(res)
+        postUpdate(res)
     }
 
-    postUpdate = (res) => {
-        if (res.data.error) {
-            this.setState({ message: res.data.error });
+    function postUpdate(res) {
+        if(res.data.error) {
+            updateMessage(res.data.error);
         } else {
-            this.setState({ message: res.data.message });
+            updateMessage(res.data.message);
         }
-        this.setState({
-            newPassword: '',
-            confirmNewPassword: '',
-            password: '', 
-        })
-
+        clearPassword();
+        clearNewPassword();
+        clearNewPWConfirmation();
     }
 
-    handleDeleteUser = e => {
-        this.setState({ isDeleteConfirmation: true });
-    }
-
-    cancelDeleteUser = e => {
-        this.setState({ isDeleteConfirmation: false });
-    }
-
-    toggleEmailLock = (e) => {
-        e.preventDefault();
-        this.setState(ps => ({
-            emailLocked: !ps.emailLocked
-        }))
-    }
-    
-    toggleUsernameLock = (e) => {
-        e.preventDefault();
-        this.setState(ps => ({
-            usernameLocked: !ps.usernameLocked
-        }))
-    }
-
-    render() {
-        const { email, username, password, newPassword, isDeleteConfirmation,
-            confirmNewPassword, emailLocked, usernameLocked 
-        } = this.state;
-
-        let isDisabled = true;
+    let isDisabled = true;
         
-        if (email && username && password && (newPassword === confirmNewPassword)) {
-            
-            isDisabled = false;
-        } else {
-            isDisabled = true;
-        }
+    if (email && username && password && (newPassword === confirmNewPassword)) {
+        isDisabled = false;
+    } else {
+        isDisabled = true;
+    }
 
-
-        return (
-            <div className='User'>
+    return (
+        <div className='User'>
                 <h1>USER SETTINGS</h1>
-                <form onSubmit={this.handleSubmit} className='Form'>
+                <form onSubmit={handleSubmit} className='Form'>
                     <div className='message'>
                         <p>
-                            {this.state.message}
+                            {message}
                         </p>
                     </div>
                     { emailLocked ? (
@@ -137,7 +95,7 @@ export class User extends Component {
                                         {email}
                                     </p>
                                 </div>
-                                <div className='lock' onClick={this.toggleEmailLock}>
+                                <div className='lock' onClick={toggleEmailLock}>
                                     <i className="fas fa-lock"></i>
                                 </div>
                             </div>
@@ -146,9 +104,9 @@ export class User extends Component {
                         <div className='Input-group-locked'>
                             <label htmlFor='email' className='label'>Email</label>
                             <div className='disabled-row'>
-                                <input className='input-unlocked' type='email' id='email' value={email} onChange={this.handleUserInput}
+                                <input className='input-unlocked' type='email' id='email' value={email} onChange={updateEmail}
                                 />
-                                <div className='lock' onClick={this.toggleEmailLock}>
+                                <div className='lock' onClick={toggleEmailLock}>
                                 <i className="fas fa-lock-open"></i>
                                 </div>
                             
@@ -165,7 +123,7 @@ export class User extends Component {
                                         {username}
                                     </p>
                                 </div>
-                                <div className='lock' onClick={this.toggleUsernameLock}>
+                                <div className='lock' onClick={toggleUsernameLock}>
                                     <i className="fas fa-lock"></i>
                                 </div>
                             </div>
@@ -174,9 +132,9 @@ export class User extends Component {
                         <div className='Input-group-locked'>
                             <label htmlFor='username' className='label'>Username</label>
                             <div className='disabled-row'>
-                                <input className='input-unlocked' type='text' id='username' value={username} onChange={this.handleUserInput}
+                                <input className='input-unlocked' type='text' id='username' value={username} onChange={updateUsername}
                                 />
-                                <div className='lock' onClick={this.toggleUsernameLock}>
+                                <div className='lock' onClick={toggleUsernameLock}>
                                 <i className="fas fa-lock-open"></i>
                                 </div>
                             
@@ -187,20 +145,20 @@ export class User extends Component {
                     <div className='Input-group'>
                         <label htmlFor='newPassword' className='label'>New Password</label>
                         
-                        <input type='password' id='newPassword' value={newPassword} onChange={this.handleUserInput}
+                        <input type='password' id='newPassword' value={newPassword} onChange={updateNewPassword}
                         />
                     </div>
                     <div className='Input-group'>
                         <label htmlFor='confirmNewPassword'>Confirm New Password</label>
                         <input type='password' id='confirmNewPassword' value={confirmNewPassword}
-                            onChange={this.handleUserInput}
+                            onChange={updateNewPWConfirmation}
                         />
                         <PWConfirmation password={newPassword} passwordConfirmation={confirmNewPassword} />
                     </div>
                     <div className='Input-group'>
                         <label htmlFor='password'>Password</label>
-                        <input type='password' id='password' value={this.state.password}
-                            onChange={this.handleUserInput}
+                        <input type='password' id='password' value={password}
+                            onChange={updatePassword}
                         />
                     </div>
                     
@@ -209,7 +167,7 @@ export class User extends Component {
                                 type='button'
                                 className={`deleteUser-btn ${isDisabled ? 'Disabled-delete' : ''}`}
                                 disabled={isDisabled}
-                                onClick={this.handleDeleteUser}
+                                onClick={handleDeleteUser}
                             >Delete User</button>
                         <button 
                             type='submit'
@@ -220,14 +178,13 @@ export class User extends Component {
                 </form>
                 
                 { isDeleteConfirmation ? (
-                     <DeleteUserConfirmation password={password} cancelDeleteUser={this.cancelDeleteUser} />
+                     <DeleteUserConfirmation user={user} updateMessage={updateMessage} password={password} cancelDeleteUser={handleDeleteUser} />
                 ) : (
                     null
                 )}
                
             </div>
-        )
-    }
+    )
 }
 
-export default User
+export default User;
