@@ -104,9 +104,9 @@ module.exports = {
             from: 'React-List Admin<edrdmolina11@gmail.com>',
             subject: 'React-List App - Forgot / Reset Password',
             text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.
-            Please click on the following link, or copy and paste it into your browser to complete the
-            process: http://localhost:3000/reset-pw/${token} If you did not request this, please ignore this email
-            and your password will remain unchanged. TOKEN: ${token}`.replace(/                /g, ''),
+            Please use the following token to unlock a password reset.
+            ${token}
+            `.replace(/    /g, ''),
         }
         await sgMail.send(msg);
         return res.status(200).json({

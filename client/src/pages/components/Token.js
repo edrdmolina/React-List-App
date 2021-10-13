@@ -91,32 +91,32 @@ function Token(props) {
                     <input type='text' id='token1' 
                         name='token-1' value={token1}
                         maxLength='1' data-slot={1}
-                        onChange={updateToken1}
+                        onChange={updateToken1} autoComplete='off'
                     />
                     <input type='text' id='token2' 
                         name='token-2' value={token2}
                         maxLength='1' data-slot={2}
-                        onChange={updateToken2}
+                        onChange={updateToken2} autoComplete='off'
                     />
                     <input type='text' id='token3' 
                         name='token-3' value={token3}
                         maxLength='1' data-slot={3}
-                        onChange={updateToken3}
+                        onChange={updateToken3} autoComplete='off'
                     />
                     <input type='text' id='token4' 
                         name='token-4' value={token4}
                         maxLength='1' data-slot={4}
-                        onChange={updateToken4}
+                        onChange={updateToken4} autoComplete='off'
                     />
                     <input type='text' id='token5' 
                         name='token-5' value={token5}
                         maxLength='1' data-slot={5}
-                        onChange={updateToken5}
+                        onChange={updateToken5} autoComplete='off'
                     />
                     <input type='text' id='token6'
                         name='token-6' value={token6}
                         maxLength='1' data-slot={6}
-                        onChange={updateToken6}
+                        onChange={updateToken6} autoComplete='off'
                     />
                 </div>
                 <button className='cancel-btn' onClick={handleCancel}>CANCEL</button>
