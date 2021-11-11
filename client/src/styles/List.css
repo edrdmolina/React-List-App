@@ -20,6 +20,7 @@ table {
     box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.25);
     color: white;
     width: 90%;
+    margin-bottom: 100px;
 }
 
 thead tr {
