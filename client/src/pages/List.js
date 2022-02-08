@@ -9,7 +9,7 @@ import Item from './components/Item';
 // Styles
 import '../styles/List.css'
 
-export class List extends Component {
+class List extends Component {
     constructor(props) {
         super(props)
     
@@ -129,42 +129,34 @@ export class List extends Component {
         })
 
         return (
-            <div className='List'>
-                <div className='Header'>
-                    <h1>{title}</h1>
-                </div>
-                
-                <table>
-                    <thead>
-                        <tr>
-                            
-                            <th className='Item-header' onClick={this.handleSort}>
-                                ITEMS 
-                                <i className="fas fa-sort"></i>
-                            </th>
-                            <th className='Qty-header'>
+            <div className='list'>
+                <h1 className='list-title'>{title}</h1>
+                <div className='table'>
+                    <div className='table-head'>
+                        <div className='table-row'>
+                            <div className='table-data-head sort' onClick={this.handleSort}>
+                                ITEMS
+                                <i className="fas fa-sort" style={{ paddingLeft: '10px' }} />
+                            </div>
+                            <div className='table-data-head'>
                                 QTY
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='table-body'>
                         { items }
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colSpan='2'>
+                    </div>
+                    <div className='table-footer'>
+                        <div className='table-row'>
+                            <div className='table-data-footer'>
                                 <AddItemForm listId={listId} addItem={this.addItem} />
-                            </td>
-                        </tr>
-                        <tr className='deleteItems-row'>
-                            <td colSpan='2'>
-                                <button className='deleteItems-button' onClick={this.deleteItems}>REMOVE CHECKED ITEMS</button>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-
-                
+                            </div>
+                        </div>
+                        <div className='table-row'>
+                            <button className='deleteItems-button' onClick={this.deleteItems}>REMOVE CHECKED ITEMS</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }
