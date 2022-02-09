@@ -2,10 +2,10 @@
 import React, { Component } from 'react';
 import { Swiper } from 'swiper/react/swiper';
 import { SwiperSlide } from 'swiper/react/swiper-slide';
+import '../../styles/Item.css'
 import axios from 'axios';
 
 import 'swiper/swiper.min.css';
-import '../../styles/Item.css'
 
 class Item extends Component {
     constructor(props) {
@@ -74,7 +74,6 @@ class Item extends Component {
     handleDeleteItem = async () => {
         const { _id } = this.props;
         try {
-            this.handleEditToggle();
             this.props.getData();
             await axios.delete(`/api/delete-item/${_id}`);
         } catch (err) {
@@ -111,7 +110,7 @@ class Item extends Component {
                 ) : (
                     <SwiperSlide className='table-row-edit-btn'>
                         <i className="far fa-trash-alt" onClick={this.handleDeleteItem} />
-                        <i className="far fa-check-square" id={_id} onClick={this.handleClick} />
+                        {/* <i className="far fa-check-square" id={_id} onClick={this.handleClick} /> */}
                         <i className="far fa-edit" onClick={this.handleEditToggle} />
                     </SwiperSlide>
                 ) }
