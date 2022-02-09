@@ -172,5 +172,10 @@ module.exports = {
         }
         
         return res.status(200).json({ message: 'deleting items'});
+    },
+    async deleteItem(req, res, next) {
+        console.log('PINGED DELETE SINGLE ITEM');
+        await Item.findByIdAndDelete(req.params.itemId);
+        return res.status(200);
     }
 }

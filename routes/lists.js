@@ -34,7 +34,10 @@ router.put('/check/:itemId', isLoggedIn, catchAsync(lists.checkItem));
 // Put Update item
 router.put('/update-item', isLoggedIn, catchAsync(lists.updateItem))
 
-// DELETE item from lists /removeItem
+// DELETE single item from list
+router.delete('/delete-item/:itemId', isLoggedIn, catchAsync(lists.deleteItem));
+
+// DELETE items from lists /removeItem
 router.post('/removeItems/:listId', isLoggedIn, catchAsync(lists.deleteItems))
 
 module.exports = router;
