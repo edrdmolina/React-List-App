@@ -53,6 +53,10 @@ class Item extends Component {
         }))
     }
 
+    handleEditSave = () => {
+        this.handleEditToggle();
+    }
+
     render() {
         const { _id, checked, title, quantity } = this.props
         return (
@@ -77,7 +81,7 @@ class Item extends Component {
                             <div className='qty'>{this.state.quantity}</div>
                             <i className='far fa-plus-square plus' onClick={this.handleQtyIncrement} />
                         </div>
-                        <button>SAVE</button>
+                        <button onClick={this.handleEditSave}>SAVE</button>
                     </SwiperSlide>
                 ) : (
                     <SwiperSlide className='table-row-edit-btn'>
