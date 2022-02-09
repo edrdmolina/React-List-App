@@ -28,8 +28,11 @@ router.delete('/:listId', isLoggedIn, catchAsync(lists.deleteList));
 // POST New item to lists /:listId
 router.post('/:listId', isLoggedIn, catchAsync(lists.addItem));
 
-// Post Check items /:itemId
+// Put Check items /:itemId
 router.put('/check/:itemId', isLoggedIn, catchAsync(lists.checkItem));
+
+// Put Update item
+router.put('/update-item', isLoggedIn, catchAsync(lists.updateItem))
 
 // DELETE item from lists /removeItem
 router.post('/removeItems/:listId', isLoggedIn, catchAsync(lists.deleteItems))

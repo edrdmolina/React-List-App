@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Swiper } from 'swiper/react/swiper';
 import { SwiperSlide } from 'swiper/react/swiper-slide';
+import axios from 'axios';
 
 import 'swiper/swiper.min.css';
 import '../../styles/Item.css'
@@ -53,8 +54,22 @@ class Item extends Component {
         }))
     }
 
-    handleEditSave = () => {
-        this.handleEditToggle();
+    handleEditSave = async () => {
+        const { _id } = this.props;
+        const { title, quantity } = this.state;
+        const input = { title, quantity, _id };
+        try {
+            const res = await axios.put(`/api/update-item`, input)
+            this.setState({
+                title: res.data.item.title,
+                quantity: res.data.item.quantity
+            })
+            this.props.getData();
+            this.handleEditToggle();
+        } catch (err) {
+            return console.error(err)
+        }
+        
     }
 
     render() {

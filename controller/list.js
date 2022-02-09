@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const List = require('../models/list');
 const Item = require('../models/item');
+const item = require('../models/item');
 
 module.exports = {
     // LISTS
@@ -147,6 +148,16 @@ module.exports = {
         item.checked = !item.checked;
         item.save()
         return res.status(200).json({ message })
+    },
+    async updateItem(req, res, next) {
+        const message = 'PINGED UPDATE ITEM ROUTE'
+        console.log(message)
+        const { title, quantity, _id } = req.body;
+        const item = await Item.findById(_id);
+        item.title = title;
+        item.quantity = quantity;
+        item.save();
+        res.status(200).json({ message, item })
     },
     async deleteItems(req, res, next) {
         console.log('PINGED DELETE ITEMS')

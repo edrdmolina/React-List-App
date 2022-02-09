@@ -124,7 +124,7 @@ class List extends Component {
         const { title } = this.state.list;
         const items = this.state.items.map(item => {
             return (
-                <Item key={item._id} checkItem={this.checkItem} {...item} />
+                <Item key={item._id} checkItem={this.checkItem} {...item} getData={this.getData} />
             )
         })
 
