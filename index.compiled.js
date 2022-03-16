@@ -90,7 +90,7 @@ app.use('/api/users', userRoutes); // Handles any requests that don't match the 
 //   res.sendFile(path.join(__dirname+'/client/public/index.html'));
 // });
 
-var port = process.env.PORT || 5000;
+var port = process.env.PORT || 8081;
 app.listen(port, function () {
   console.log('App is listening on port ' + port);
 });
