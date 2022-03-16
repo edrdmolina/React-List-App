@@ -1,12 +1,10 @@
 const User = require('../models/user');
 const List = require('../models/list');
 const Item = require('../models/item');
-const item = require('../models/item');
 
 module.exports = {
     // LISTS
     async addList(req, res, next) {
-        console.log('PINGED POST NEW LIST ROUTE');
         const { title } = req.body;
         const { _id } = req.user;
         // Create new list
@@ -26,7 +24,6 @@ module.exports = {
         })
     },
     async getLists(req, res, next) {
-        console.log('PINGED GET LISTS ROUTE');
         const { _id } = req.user;
         const lists = await List.find({ user: { _id } })
             .populate('user')
@@ -42,14 +39,12 @@ module.exports = {
         })
     },
     async deleteList(req, res, next) {
-        console.log('PINGED DELETE LIST ROUTE');
         const { listId } = req.params;
         await List.findByIdAndDelete({ _id: listId })
         return res.status(200).json({ redirectUrl: '/' })
     },
     // ITEMS
     async addItem(req, res, next) {
-        console.log('PINGED POST NEW ITEM ROUTE');
         // Declare variables
         const { name, qty, listId } = req.body;
         const { _id } = req.user;
@@ -69,7 +64,6 @@ module.exports = {
         });
     },
     async getItems(req, res, next) {
-        console.log('PINGED GET ITEMS ROUTE')
         const { listId } =  req.params;
 
         const list = await List.findById({ _id: listId })
@@ -86,7 +80,6 @@ module.exports = {
         });
     },
     async sortItems(req, res, next) {
-        console.log('PINGED SORTING GET ITEMS');
         const { listId } = req.params;
         const { sort } = req.body;
         let list = {};
@@ -142,7 +135,6 @@ module.exports = {
     },
     async checkItem(req, res, next) {
         const message = 'PINGED CHECKOFF ITEM';
-        console.log(message)
         const { itemId } = req.params;
         const item = await Item.findById(itemId);
         item.checked = !item.checked;
@@ -150,8 +142,7 @@ module.exports = {
         return res.status(200).json({ message })
     },
     async updateItem(req, res, next) {
-        const message = 'PINGED UPDATE ITEM ROUTE'
-        console.log(message)
+        const message = 'PINGED UPDATE ITEM ROUTE';
         const { title, quantity, _id } = req.body;
         const item = await Item.findById(_id);
         item.title = title;
@@ -160,7 +151,6 @@ module.exports = {
         res.status(200).json({ message, item })
     },
     async deleteItems(req, res, next) {
-        console.log('PINGED DELETE ITEMS')
         const { listId } = req.params;
         const { items } = req.body;
 
@@ -174,7 +164,6 @@ module.exports = {
         return res.status(200).json({ message: 'deleting items'});
     },
     async deleteItem(req, res, next) {
-        console.log('PINGED DELETE SINGLE ITEM');
         await Item.findByIdAndDelete(req.params.itemId);
         return res.status(200);
     }

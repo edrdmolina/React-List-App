@@ -7,15 +7,12 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 module.exports = {
     // USERS
     async getUserData(req, res, next) {
-        console.log('PINGED GET USER DATA ROUTE')
         return res.status(200).json({
             user: req.user,
             message: 'PINGED GET USER DATA ROUTE'
         })
     },
     async registerUser(req, res, next) {
-        console.log('PINGED POST FOR REGISTER ROUTE')
-
         // Register new user
         const user = await User.register(new User(req.body), req.body.password);
         req.login(user, error => {
@@ -29,7 +26,6 @@ module.exports = {
         })
     },
     async updateUser(req, res, next) {
-        console.log('PINGED UPDATE USER ROUTE')
         const { user } = res.locals;
         const { username, email } = req.body;
         if (username) user.username = username;
@@ -44,7 +40,6 @@ module.exports = {
     },
     async deleteUser(req, res, next) {
         const message = 'PINGED DELETE USER ROUTE';
-        console.log(message);
         const { user } = req.body;
         await User.findByIdAndDelete({ _id: user._id })
         
@@ -54,7 +49,6 @@ module.exports = {
         })
     },
     async postLogin(req, res, next) {
-        console.log('PINGED LOGIN ROUTE')
         const { username, password } = req.body;
         const { user, error } = await User.authenticate()(username, password)
         if (!user && error) {
@@ -71,7 +65,6 @@ module.exports = {
         })
     },
     async getLogout(req, res, next) {
-        console.log('PINGED LOGOUT ROUTE');
         req.logout();
         return res.status(200).json({
             message: 'PINGED BACKEND LOGOUT ROUTE',
@@ -79,7 +72,6 @@ module.exports = {
     },
     async reqResetToken(req, res, next) {
         const message = 'PINGED REQ RESET TOKEN ROUTE';
-        console.log(message);
         const { email } = req.body;
         // Search for user
         const user = await User.findOne({ email })
@@ -114,7 +106,6 @@ module.exports = {
         })
     },
     async verifyResetToken(req, res, next) {
-        console.log('PINGED VERIFY RESET TOKEN');
         const { token } = req.body;
 
         // Find user with token
