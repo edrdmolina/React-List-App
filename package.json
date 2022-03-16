@@ -9,7 +9,7 @@
     "server": "nodemon index.js",
     "client": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "build": "./index.js"
+    "build": "babel index.js --out-file index.compiled.js"
   },
   "author": "Eduardo Molina",
   "license": "MIT",
