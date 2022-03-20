@@ -1,79 +1,55 @@
 // Libraries
-import React, { Component } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { createUseStyles } from 'react-jss';
 
-//Components
-import NewListForm from './components/NewListForm';
+// Components
 import Listsbox from './components/Listsbox';
-import AddListButton from './components/AddListButton';
+import AddList from './components/AddList';
 
 // Styles
-import '../styles/Lists.css'
+const useStyles = createUseStyles({
+    lists: {
+        width: '90%',
+        minHeight: `${window.innerHeight - 80}px`,
+        maxWidth: '1200px',
+        display: 'flex',
+        flexFlow: 'row wrap',
+        margin: '0 auto',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '2rem',
+        padding: '5rem 0',
+    }
+})
 
-export class Lists extends Component {
-    constructor(props) {
-        super(props)
+function Lists(props) {
+    const { data, addList, getData } = props;
+    const classes = useStyles();
+
+    const [showForm, toggleShowForm] = useState(false);
+
+    useEffect(() => {
+      getData();
+    }, [getData])
     
-        this.state = {
-             lists: [],
-             showForm: false,
-        }
-    }
-    
-    componentDidMount = () => {
-        this.getData();
+
+    function handleToggleShowForm() {
+        toggleShowForm(!showForm);
     }
 
-    // Get data from DB
-    getData = async () => {
-        const result = await axios.get('/api/lists');
-        if (result.data.error) {
-            return window.location.href = result.data.redirectUrl;
-        }
-        const { lists } = result.data
-        this.setState({
-            lists: [...lists]
-        })
-    }
 
-    // Open input form for new list
-    toggleInputForm = e => {
-        this.setState(ps => ({
-            showForm: !ps.showForm,
-        }))
-    }
-
-    addList = newList => {
-        this.setState(ps => ({
-            lists: [...ps.lists, newList]
-        }))
-    }
-
-    render() {
-
-        const lists = this.state.lists.map(l => {
-            return (
-                <Listsbox {...l} key={l._id} />
-            )
-        })
-        
+    const lists = data.map(list => {
         return (
-            <div className='Lists'>
-                { lists }
-                <div className='AddList'>
-                    { this.state.showForm ? (
-                        <NewListForm 
-                            cancel={this.toggleInputForm} addList={this.addList} 
-                            toggleInputForm={this.toggleInputForm}
-                        />
-                    ) : (
-                        <AddListButton toggleInputForm={this.toggleInputForm} />
-                    )}
-                </div>
-                
-            </div>
+            <Listsbox {...list} key={list._id} />
         )
-    }
+    })
+
+    return (
+        <div className={classes.lists}>
+            { lists }
+            < AddList handleToggleShowForm={handleToggleShowForm} showForm={showForm} addList={addList} />
+        </div>
+    )
 }
 
 export default Lists

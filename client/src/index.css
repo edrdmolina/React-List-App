@@ -5,7 +5,20 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(90deg, rgba(137, 1, 186, 0.531), rgba(255, 0, 0, 0.524));
+  background: linear-gradient(116.62deg, rgba(79, 81, 188, 0.55) 15.73%, rgba(0, 2, 112, 0.65) 99.71%);
+  background-size: 300%;
+  animation: bg-animation 10s linear 0s infinite alternate;
+  min-height: 100vh;
+  min-width: 100vw;
+}
+
+@keyframes bg-animation {
+  from {
+    background-position: right;
+  }
+  to {
+    background-position: left;
+  }
 }
 
 code {

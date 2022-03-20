@@ -1,70 +1,93 @@
 // Libraries
-import React, { Component } from 'react'
-import axios from 'axios'
+import React, { useState } from 'react'
+import { createUseStyles } from 'react-jss';
 
-export class AddItemForm extends Component {
-    constructor(props) {
-        super(props)
-    
-        this.state = {
-             name: '',
-             qty: 1,
+// Styles
+const useStyles = createUseStyles({
+    addItemForm: {
+        width: '100%',
+        height: '3rem',
+        borderBottom: '1px solid #FCFCFC',
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+
+
+        '& input': {
+            width: '55%',
+            textAlign: 'center',
+            borderRadius: '5px',
+            color: '#FCFCFC',
+            boxShadow: '0 0 5px #4F51BC',
+        },
+        '& input:focus': {
+            boxShadow: '0 0 5px #FCFCFC',
+        },
+
+        '& button': {
+            color: '#FCFCFC',
+            backgroundColor: '#4F51BC',
+            padding: '0.25rem 0.75rem',
+            borderRadius: '15px',
+
+            '&:active': {
+                backgroundColor: '#4F51BC32',
+            }
+        }
+    },
+
+    quantityContainer: {
+        width: '20%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        fontSize: '1.75rem',
+
+        '& i': {
+            cursor: 'pointer',
         }
     }
+})
 
-    handleUserInput = e => {
-        const { value, id } = e.target;
-        this.setState({ [id]: value });
+function AddItemForm(props) {
+    const classes = useStyles();
+    const { addItem } = props;
+
+    const [titleInput, updateTitleInput] = useState('');
+    const [quantityInput, updateQuantityInput] = useState(1);
+
+
+    function handleTitleInputChange(e) {
+        updateTitleInput(e.target.value);
     }
-    
-    addQty = e => this.setState(ps => ({ qty: ps.qty+= 1 }))
 
-    subtractQty = e => { 
-        if (this.state.qty <= 1) return;
-        this.setState(ps => ({ qty: ps.qty-= 1 }))
+    const handleQtyIncrement = () => updateQuantityInput(quantityInput + 1);
+    function handleQtyDecrement() {
+        if (quantityInput === 1) return;
+        updateQuantityInput(quantityInput - 1);
     }
 
-    handleSubmit = e => {
+    function handleSubmit(e) {
         e.preventDefault();
-        this.addItem()
+        addItem(titleInput, quantityInput);
+        updateTitleInput('');
+        updateQuantityInput(1);
+        document.querySelector('#addItemInput').focus();
     }
 
-    // Adds item to backend MongoDb
-    addItem = async () => {
-        const { name, qty } = this.state;
-        const { listId } = this.props
-        const input = { name, qty, listId };
-        const result = await axios.post(`/api/${listId}`, input);
-        this.props.addItem(result.data.item)
-        this.setState({ name: '', qty: 1 })
-    }
-    
-    render() {
-        return (
-            <form onSubmit={this.handleSubmit}>
-                <div className='Name-container'>
-                    <input id='name' name='name' className='Name-input'
-                        type='text' value={this.state.name}
-                        onChange={this.handleUserInput}
-                    />
-                    <button className='submit' type='submit'>ADD</button>
-                </div>
-                <div className='Qty-container'>
-                    <div className='Qty-number' >{this.state.qty}</div>
-                    <div className='Qty-buttons'>
-                        <i 
-                            className="plus far fa-plus-square fa-2x"
-                            onClick={this.addQty}
-                        ></i>
-                        <i 
-                            className="minus far fa-minus-square fa-2x"
-                            onClick={this.subtractQty}
-                        ></i>
-                    </div>
-                </div>
-            </form>
-        )
-    }
+    return (
+        <form className={classes.addItemForm} onSubmit={handleSubmit}>
+            <input id="addItemInput" type='text' value={titleInput} onChange={handleTitleInputChange} />
+            <div className={classes.quantityContainer}>
+                <i className='far fa-minus-square minus' onClick={handleQtyDecrement} />
+                {quantityInput}
+                <i className='far fa-plus-square plus' onClick={handleQtyIncrement} />
+            </div>
+            <button type='submit'>ADD</button>
+        </form>
+    )
 }
 
 export default AddItemForm

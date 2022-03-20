@@ -23,21 +23,6 @@ module.exports = {
             newList
         })
     },
-    async getLists(req, res, next) {
-        const { _id } = req.user;
-        const lists = await List.find({ user: { _id } })
-            .populate('user')
-            .populate({
-                path: 'items',
-                options: {
-                    limit: 5,
-                    sort: { created: -1 },
-                },
-            }).exec()
-        return res.status('200').json({
-            lists
-        })
-    },
     async deleteList(req, res, next) {
         const { listId } = req.params;
         await List.findByIdAndDelete({ _id: listId })
@@ -45,6 +30,7 @@ module.exports = {
     },
     // ITEMS
     async addItem(req, res, next) {
+        console.log("Hitting add item")
         // Declare variables
         const { name, qty, listId } = req.body;
         const { _id } = req.user;
@@ -59,25 +45,7 @@ module.exports = {
         // Save changes
         await item.save();
         await list.save();
-        return res.status(200).json({
-            item, list
-        });
-    },
-    async getItems(req, res, next) {
-        const { listId } =  req.params;
-
-        const list = await List.findById({ _id: listId })
-            .populate({ 
-                path: 'items',
-            })
-        if (!list) {
-            return res.status(200).json({
-                error: 'List not found.'
-            })
-        }
-        return res.status(200).json({
-            list
-        });
+        return res.status(200).json({ item });
     },
     async sortItems(req, res, next) {
         const { listId } = req.params;
@@ -121,7 +89,7 @@ module.exports = {
                     });
                 break;
             default:
-                console.log('Sort error')
+                console.log('Error on item list sort.')
         }
         if (!list) {
             return res.status(200).json({
@@ -142,13 +110,12 @@ module.exports = {
         return res.status(200).json({ message })
     },
     async updateItem(req, res, next) {
-        const message = 'PINGED UPDATE ITEM ROUTE';
         const { title, quantity, _id } = req.body;
         const item = await Item.findById(_id);
         item.title = title;
         item.quantity = quantity;
         item.save();
-        res.status(200).json({ message, item })
+        res.status(200).json({ item })
     },
     async deleteItems(req, res, next) {
         const { listId } = req.params;
@@ -166,5 +133,15 @@ module.exports = {
     async deleteItem(req, res, next) {
         await Item.findByIdAndDelete(req.params.itemId);
         return res.status(200);
+    },
+    async getData(req, res) {
+        const { _id } = req.user;
+        const lists = await List.find({ user: { _id } })
+            .populate({
+                path: 'items',
+            }).exec();
+        return res.status('200').json({
+            lists
+        })             
     }
 }

@@ -10,14 +10,11 @@ const {
     catchAsync, isLoggedIn
 } = require('../middleware')
 
-// GET Lists /lists
-router.get('/lists', isLoggedIn, catchAsync(lists.getLists));
+// GET ALL Data
+router.get('/all', isLoggedIn, catchAsync(lists.getData));
 
 // POST Create new list /addList
 router.post('/addList', isLoggedIn, catchAsync(lists.addList));
-
-// GET Items from list /:listId
-router.get('/:listId', isLoggedIn, catchAsync(lists.getItems));
 
 // PUT Sort items /sort/:listId
 router.put('/sort/:listId', isLoggedIn, catchAsync(lists.sortItems));

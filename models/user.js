@@ -25,7 +25,6 @@ const UserSchema = new Schema({
 });
 
 UserSchema.post('findOneAndDelete', async function (doc) {
-    console.log('TRIGGER USER SCHEMA MIDDLEWARE')
     
     if(doc) {
         doc.lists.forEach(async list => {

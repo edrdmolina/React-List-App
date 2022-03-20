@@ -1,165 +1,175 @@
 // Libraries
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createUseStyles } from 'react-jss';
 import axios from 'axios';
 
 // Components
-import AddItemForm from './components/AddItemForm';
 import Item from './components/Item';
+import AddItemForm from './components/AddItemForm';
 
 // Styles
-import '../styles/List.css'
+const useStyles = createUseStyles({
+    list: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        color: '#FCFCFC',
+        padding: '3rem 0',
 
-class List extends Component {
-    constructor(props) {
-        super(props)
+        '& h2': {
+            textTransform: 'uppercase',
+            marginBottom: '2rem',
+            width: '100%',
+            textAlign: 'center',
+        }
+    },
+    table: {
+        backgroundColor: '#FCFCFC1f',
+        borderRadius: '10px',
+        boxShadow: '0px 0px 10px #00000052',
+        width: '90%',
+        maxWidth: '576px',
+        overflow: 'hidden',
+    },
+    tableHead: {
+        width: '100%',
+        height: '50px',
+        margin: 'auto',
+        borderBottom: '1px solid #FCFCFC',
+
+        '& div': {
+            padding: '0 2.5%',
+        }
+    },
+    tableRow: {
+        height: '3rem',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+
+    },
+    tableBody: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+    },
+    sort: {
+        cursor: 'pointer',
+    },
+    deleteItemsButton: {
+        margin: '0 auto',
+        color: '#FCFCFC',
+        backgroundColor: '#4F51BC',
+        padding: '0.25rem 0.75rem',
+        borderRadius: '15px',
+        
+        '&:active': {
+            backgroundColor: '#4F51BC32',
+        }
+    }
+})
+
+function Lists(props) {
+    const classes = useStyles();
+    const { data, updateData, getData } = props;
+    const { listId } = props.match.params;
+    const listData = data.filter(l => l._id === listId)[0];
+
+    const [sort, updateSort] = useState(0);
+    const [items, updateItems] = useState([...listData.items]);
+
+    useEffect(() => {
+      getData();
+    }, [getData])
     
-        this.state = {
-            list: { _id: ''},
-            items: [],
-            sort: 0,
-        }
-    }
-    
-    componentDidMount = async () => {
-        // Gets lists data on component render
-        await this.getData();
-        // Updates the App component to show the user has now ENTERED a list.
-        this.props.enteredList(this.state.list._id);
-    }    
-    
-    componentWillUnmount = () => {
-        // Updates the App component to show the user has now EXITED a list.
-        this.props.exitedList();
+    async function sortItems() {
+        if (sort === 3) updateSort(0);
+        else updateSort(sort + 1);
+        const input = { sort };
+        const result = await axios.put(`/api/sort/${listId}`, input);
+        updateItems([...result.data.list.items])
     }
 
-    // Get data from DB
-    getData = async (sort) => {
-        const { listId } = this.props.match.params;
-        let res = { data: { error: '', redirectUrl: '' } };
-        // checks if arg exist and is a number
-        if(!isNaN(sort)) {
-            const input = {sort}
-            res = await axios.put(`/api/sort/${listId}`, input);
-        } else {
-            res = await axios.get(`/api/${listId}`); 
-        }
-        if (res.data.error) {
-            return window.location.href = res.data.redirectUrl;
-            // ERROR PAGE
-        } else {
-            const { list } = res.data;
-            const items = [...list.items];
-            this.setState({ list: list, items });
-        }
-    }
-
-    // Adds item to client array in state
-    addItem = (newItem) => {
-        this.setState(ps=> ({
-            items: [...ps.items, newItem]
-        }))
-    }
-
-    // Check Item
-    checkItem = async (itemId) => {
-        // CHECK IN FRONTEND
-        const { items } = this.state
-        const newItems = [...items]
-        let itemIndex = items.findIndex(item => item._id === itemId)
-        newItems[itemIndex].checked = !newItems[itemIndex].checked;
-        this.setState(ps => ({
-            items: [...newItems]
-        }))
-        // CHECK IN BACKEND
-        const res = await axios.put(`api/check/${itemId}`);
-        console.log(res.data)
-    }
-
-    // Delete checked items
-    deleteItems = async () => {
-        const { items } = this.state;
-        const listId = this.state.list._id;
-        const checkedItems = items.filter(item => {
-            return item.checked === true;
+    async function checkItem(itemId) {
+        const newItems = items.map(i => {
+            if (i._id === itemId) i.checked = !i.checked;
+            return i;
         })
+        updateItems([...newItems]);
+        await axios.put(`api/check/${itemId}`);
 
-        if (checkedItems.length) {
-            // DELETE IN FRONTEND
-            const uncheckedItems = items.filter(item => {
-                return item.checked === false;
-            })
-            this.setState({
-                items: uncheckedItems
-            })
-            // DELETE IN BACKEND
-            const input = { items: [...checkedItems] }
-            const res = await axios.post(`/api/removeItems/${listId}`, input)
-            console.log(res.data.message)
+    }
+
+    async function deleteItem(itemId) {
+        const newItems = items.filter(i => i._id !== itemId);
+        updateItems(newItems);
+        try {
+            await axios.delete(`/api/delete-item/${itemId}`)
+        }   
+        catch (error) {
+            console.error(error)
         }
-        return
     }
 
-    // Handle sort
-    handleSort = async () => {
-        this.sortItems();
-    }
-
-    // Change sort state
-    sortItems = () => {
-        const { sort } = this.state;
-        if (sort === 3) {
-            return this.setState({ sort: 0 }, () => {
-                this.getData(this.state.sort)
-            });
-        }
-        this.setState(ps => ({
-            sort: ps.sort += 1
-        }), () => {
-            this.getData(this.state.sort)
+    async function editItem(itemId, itemTitle, itemQty) {
+        const input = { title: itemTitle, quantity: itemQty, _id: itemId};
+        const result = await axios.put('/api/update-item', input);
+        const newItems = items.map(i => {
+            if (i._id === itemId) return result.data.item;
+            else return i;
         })
+        updateItems([...newItems]);
     }
 
-    render() {
-        const { listId } = this.props.match.params;
-        const { title } = this.state.list;
-        const items = this.state.items.map(item => {
-            return (
-                <Item key={item._id} checkItem={this.checkItem} {...item} getData={this.getData} />
-            )
-        })
+    async function addItem(itemTitle, itemQty) {
+        const input = { name: itemTitle, qty: itemQty, listId };
+        const result = await axios.post(`/api/${listId}`, input);
+        updateItems([...items, result.data.item]);
+    }
 
+    const itemComponents = items.map(item => {
         return (
-            <div className='list'>
-                <h1 className='list-title'>{title}</h1>
-                <div className='table'>
-                    <div className='table-head'>
-                        <div className='table-row'>
-                            <div className='table-data-head sort' onClick={this.handleSort}>
-                                ITEMS
-                                <i className="fas fa-sort" style={{ paddingLeft: '10px' }} />
-                            </div>
-                            <div className='table-data-head'>
-                                QTY
-                            </div>
+            <Item 
+                key={item._id} {...item} 
+                updateData={updateData} checkItem={checkItem} 
+                deleteItem={deleteItem} editItem={editItem}
+            />
+        )
+    })
+
+    return (
+        <div className={classes.list}>
+            <h2>{listData.title}</h2>
+            <div className={classes.table}>
+                <div className={classes.tableHead}>
+                    <div className={classes.tableRow}>
+                        <div className={classes.sort} onClick={sortItems}>
+                            ITEMS
+                            <i className="fas fa-sort" style={{ paddingLeft: '10px' }} />
                         </div>
-                    </div>
-                    <div className='table-body'>
-                        { items }
-                    </div>
-                    <div className='table-footer'>
-                        <div className='table-row'>
-                            <div className='table-data-footer'>
-                                <AddItemForm listId={listId} addItem={this.addItem} />
-                            </div>
-                        </div>
-                        <div className='table-row'>
-                            <button className='deleteItems-button' onClick={this.deleteItems}>REMOVE CHECKED ITEMS</button>
+                        <div>
+                            QTY
                         </div>
                     </div>
                 </div>
+                <div className={classes.tableBody}>
+                    { itemComponents }
+                </div>
+                <div>
+                    <div className={classes.tableRow}>
+                        <AddItemForm listId={listId} addItem={addItem} />
+                    </div>
+                    <div className={classes.tableRow}>
+                        <button className={classes.deleteItemsButton} /* onClick={this.deleteItems} */ >CLEAR CHECKED ITEMS</button>
+                    </div>
+                </div>
             </div>
-        )
-    }
+        </div>
+    )
 }
 
-export default List
+export default Lists

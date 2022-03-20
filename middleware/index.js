@@ -7,7 +7,6 @@ const middleware = {
                 .catch(next);
         },
     isValidPassword: async (req, res, next) => {
-        console.log('VERIFYING PASSWORD')
         const { user } = await User.authenticate()(req.user.username, req.body.password);
         if (user) {
             res.locals.user = user;
