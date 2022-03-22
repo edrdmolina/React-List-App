@@ -4,7 +4,7 @@ import axios from 'axios';
 import { createUseStyles } from 'react-jss';
 
 // Components
-import Token from './components/Token';
+import Token from '../Components/Token';
 
 // Hooks
 import useChangeInput from "../hooks/useChangeInput";

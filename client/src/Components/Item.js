@@ -106,7 +106,7 @@ function Item(props) {
     const classes = useStyles();
     const { 
         title, _id, checked, quantity, 
-        checkItem, deleteItem, editItem 
+        checkItem, deleteItem, editItem,
     } = props;
 
     const [titleInput, updateTitleInput] = useState(title);

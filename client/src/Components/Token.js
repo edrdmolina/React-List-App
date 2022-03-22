@@ -2,17 +2,89 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import { createUseStyles } from 'react-jss';
 
 // Hooks
-import useChangeToken from '../../hooks/useChangeToken';
+import useChangeToken from '../hooks/useChangeToken';
 
 // Styles
-import '../../styles/Token.css'
+const useStyles = createUseStyles({
+    modalBackground: {
+        height: '100vh',
+        width: '100vw',
+        position: 'absolute',
+        top: '0px',
+        backgroundColor: '#07020D82'
+    },
+    modal: {
+        position: 'fixed',
+        top: '30%',
+        left: 'calc(50% - 330px / 2)',
+        height: '200px',
+        width: '300px',
+        backgroundColor: '#000270',
+        boxShadow: '0 0 10px #000000',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        color: '#FCFCFC',
+        borderRadius: '10px',
+
+        '& h2': {
+            height: '15%',
+            margin: '1rem',
+        },
+
+        '& p': {
+            fontSize: '0.75rem',
+            margin: '0',
+            height: '10%',
+        },
+
+        '& button': {
+            width: '100%',
+            backgroundColor: '#C03546',
+            color: '#FCFCFC',
+            height: '20%',
+            borderRadius: '0 0 10px 10px',
+
+            '&:hover': {
+                backgroundColor: '#C03546C8'
+            }
+        }
+
+    },
+    inputGroup: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        width: '100%',
+        height: '40%',
+        padding: '0 0.5rem',
+
+        '& input': {
+            width: '35px',
+            height: '35px',
+            textAlign: 'center',
+            outline: 'none',
+            backgroundColor: '#FCFCFC',
+            borderRadius: '5px',
+            color: '#07020D',
+
+            '&:focus': {
+                border: '3px solid #4F51BC'
+            }
+        }
+    }
+
+})
 
 
 function Token(props) {
     // Initialize hooks
     const history = useHistory();
+    const classes = useStyles();
 
     // State
     const [isError, updateIsError] = useState(false);
@@ -83,11 +155,11 @@ function Token(props) {
     }
 
     return (
-        <div className={`Token${isError ? ' shake' : ''}`}>
-            <div className='Token-input'>
+        <div className={`${classes.modalBackground} ${isError ? ' shake' : ''}`}>
+            <div className={classes.modal}>
                 <h2>Input Token</h2>
                 <p>{message}</p>
-                <div className='Token-numbers'>
+                <div className={classes.inputGroup}>
                     <input type='text' id='token1' 
                         name='token-1' value={token1}
                         maxLength='1' data-slot={1}
@@ -119,7 +191,7 @@ function Token(props) {
                         onChange={updateToken6} autoComplete='off'
                     />
                 </div>
-                <button className='cancel-btn' onClick={handleCancel}>CANCEL</button>
+                <button onClick={handleCancel}>CANCEL</button>
                 
             </div>
         </div>

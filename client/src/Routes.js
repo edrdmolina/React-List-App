@@ -13,11 +13,9 @@ import ForgotPw from './pages/ForgotPw';
 import ResetPw from './pages/ResetPw';
 
 function Routes(props) {
-    const { user } = props;
-
     return (
         <Switch>
-            { user.username ? (
+            { props.user.username ? (
                 <Route exact path='/'
                     render={ routeProps => <Lists { ...routeProps } { ...props } /> }
                 />
@@ -39,7 +37,7 @@ function Routes(props) {
                 render={ routeProps => <ResetPw { ...routeProps } /> }
             />
             <Route exact path='/User'
-                render={ routeProps => <User { ...routeProps } user={user} /> }
+                render={ routeProps => <User { ...routeProps } user={props.user} getUser={props.getUser} /> }
             />
             <Route exact path='/:listId'
                 render={ routeProps => <List { ...routeProps } { ...props } /> }

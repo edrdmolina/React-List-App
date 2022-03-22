@@ -27,17 +27,23 @@ function AppRefactored() {
     const [user, updateUser] = useState({});
     const [screenWidth, updateScreenWidth] = useState(0);
 
-    useEffect(() => {
+    useEffect( () => {
         if(!user.username) getUser();
+        getData();
         getScreenWidth();
         window.onresize = getScreenWidth;
-    }, [user])
+    }, [user, updateData])
     
     async function getUser() {
         const res = await axios.get('/api/users/getUser');
         if(res.data.user) {
             updateUser(res.data.user);
         }
+    }
+
+    async function getData() {
+        const res = await axios.get('/api/all');
+        updateData(res.data.lists);
     }
 
     function getScreenWidth() {
@@ -47,7 +53,7 @@ function AppRefactored() {
     return (
         <div className={classes.app}>
             < Navbar user={user} updateUser={updateUser}/>
-            < Routes user={user} data={data} updateData={updateData} />
+            < Routes user={user} data={data} updateData={updateData} getUser={getUser} getData={getData} />
         </div>
     )
 }

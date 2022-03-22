@@ -1,11 +1,11 @@
 // Libraries
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
 import axios from 'axios';
 
 // Components
-import Item from './components/Item';
-import AddItemForm from './components/AddItemForm';
+import Item from '../Components/Item';
+import AddItemForm from '../Components/AddItemForm';
 
 // Styles
 const useStyles = createUseStyles({
@@ -74,112 +74,123 @@ const useStyles = createUseStyles({
 })
 
 function Lists(props) {
-    const classes = useStyles();
-    const { data, updateData } = props;
-    const { listId } = props.match.params;
-    const listData = data.filter(l => l._id === listId)[0];
+        const classes = useStyles();
+        const { data, updateData } = props;
+        
+        const { listId } = props.match.params;
+        const listData = data.filter(l => l._id === listId)[0];
 
-    const [sort, updateSort] = useState(0);
-    const [items, updateItems] = useState([...listData.items]);
-    
-    async function sortItems() {
-        if (sort === 3) updateSort(0);
-        else updateSort(sort + 1);
-        const input = { sort };
-        const result = await axios.put(`/api/sort/${listId}`, input);
-        updateItems([...result.data.list.items])
-    }
+        const [sort, updateSort] = useState(0);
+        const [items, updateItems] = useState([]);
 
-    async function checkItem(itemId) {
-        const newItems = items.map(i => {
-            if (i._id === itemId) i.checked = !i.checked;
-            return i;
-        })
-        updateItems([...newItems]);
-        await axios.put(`api/check/${itemId}`);
+        // REDIRECTS if there is no data.
+        if(!data.length) window.location.href = '/';
 
-    }
+        useEffect(() => {
+            updateItems([...listData.items])
+        }, [listData])
 
-    async function deleteItem(itemId) {
-        const newItems = items.filter(i => i._id !== itemId);
-        updateItems(newItems);
-        try {
-            await axios.delete(`/api/delete-item/${itemId}`)
-        }   
-        catch (error) {
-            console.error(error)
+        async function sortItems() {
+            if (sort === 3) updateSort(0);
+            else updateSort(sort + 1);
+            const input = { sort };
+            const result = await axios.put(`/api/sort/${listId}`, input);
+            updateItems([...result.data.list.items])
         }
-    }
-    async function deleteItems() {
-        // Remove from frontend
-        const newItems = items.filter(i => !i.checked);
-        const checkedItems = items.filter(i => i.checked);
-        if (!checkedItems.length) return;
-        updateItems([...newItems]);
-        // Remove from backend
-        try {
-            const input = { items: [...checkedItems] };
-            axios.post(`/api/removeItems/${listId}`, input)
-        } catch (error) {
-            console.error(error)
+
+        async function checkItem(itemId) {
+            const newItems = items.map(i => {
+                if (i._id === itemId) i.checked = !i.checked;
+                return i;
+            })
+            updateItems([...newItems]);
+            await axios.put(`api/check/${itemId}`);
+
         }
-    }
 
-    async function editItem(itemId, itemTitle, itemQty) {
-        const input = { title: itemTitle, quantity: itemQty, _id: itemId};
-        const result = await axios.put('/api/update-item', input);
-        const newItems = items.map(i => {
-            if (i._id === itemId) return result.data.item;
-            else return i;
+        async function deleteItem(itemId) {
+            const newItems = items.filter(i => i._id !== itemId);
+            updateItems(newItems);
+            try {
+                await axios.delete(`/api/delete-item/${itemId}`)
+            }   
+            catch (error) {
+                console.error(error)
+            }
+        }
+        async function deleteItems() {
+            // Remove from frontend
+            const newItems = items.filter(i => !i.checked);
+            const checkedItems = items.filter(i => i.checked);
+            if (!checkedItems.length) return;
+            updateItems([...newItems]);
+            // Remove from backend
+            try {
+                const input = { items: [...checkedItems] };
+                axios.post(`/api/removeItems/${listId}`, input)
+            } catch (error) {
+                console.error(error)
+            }
+        }
+
+        async function editItem(itemId, itemTitle, itemQty) {
+            const input = { title: itemTitle, quantity: itemQty, _id: itemId};
+            const result = await axios.put('/api/update-item', input);
+            const newItems = items.map(i => {
+                if (i._id === itemId) return result.data.item;
+                else return i;
+            })
+            updateItems([...newItems]);
+        }
+
+        async function addItem(itemTitle, itemQty) {
+            const input = { name: itemTitle, qty: itemQty, listId };
+            const result = await axios.post(`/api/${listId}`, input);
+            updateItems([...items, result.data.item]);
+        }
+
+        
+
+        const itemComponents = items.map(item => {
+            return (
+                <Item 
+                    key={item._id} {...item} 
+                    updateData={updateData} checkItem={checkItem} 
+                    deleteItem={deleteItem} editItem={editItem}
+                />
+            )
         })
-        updateItems([...newItems]);
-    }
 
-    async function addItem(itemTitle, itemQty) {
-        const input = { name: itemTitle, qty: itemQty, listId };
-        const result = await axios.post(`/api/${listId}`, input);
-        updateItems([...items, result.data.item]);
-    }
-
-    const itemComponents = items.map(item => {
         return (
-            <Item 
-                key={item._id} {...item} 
-                updateData={updateData} checkItem={checkItem} 
-                deleteItem={deleteItem} editItem={editItem}
-            />
-        )
-    })
-
-    return (
-        <div className={classes.list}>
-            <h2>{listData.title}</h2>
-            <div className={classes.table}>
-                <div className={classes.tableHead}>
-                    <div className={classes.tableRow}>
-                        <div className={classes.sort} onClick={sortItems}>
-                            ITEMS
-                            <i className="fas fa-sort" style={{ paddingLeft: '10px' }} />
-                        </div>
-                        <div>
-                            QTY
+            <div className={classes.list}>
+                <h2>{listData.title}</h2>
+                <div className={classes.table}>
+                    <div className={classes.tableHead}>
+                        <div className={classes.tableRow}>
+                            <div className={classes.sort} onClick={sortItems}>
+                                ITEMS
+                                <i className="fas fa-sort" style={{ paddingLeft: '10px' }} />
+                            </div>
+                            <div>
+                                QTY
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div className={classes.tableBody}>
-                    { itemComponents }
-                </div>
-                <div>
-                    <div className={classes.tableRow}>
-                        <AddItemForm listId={listId} addItem={addItem} />
+                    <div className={classes.tableBody}>
+                        { itemComponents }
                     </div>
-                    <div className={classes.tableRow}>
-                        <button className={classes.deleteItemsButton} onClick={deleteItems} >CLEAR CHECKED ITEMS</button>
+                    <div>
+                        <div className={classes.tableRow}>
+                            <AddItemForm listId={listId} addItem={addItem} />
+                        </div>
+                        <div className={classes.tableRow}>
+                            <button className={classes.deleteItemsButton} onClick={deleteItems} >CLEAR CHECKED ITEMS</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    )
+        )
+    
 }
 
 export default Lists

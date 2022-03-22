@@ -4,8 +4,8 @@ import { createUseStyles } from 'react-jss';
 import axios from 'axios';
 
 // Components
-import Listsbox from './components/Listsbox';
-import AddList from './components/AddList';
+import Listsbox from '../Components/Listsbox';
+import AddList from '../Components/AddList';
 
 // Styles
 const useStyles = createUseStyles({
@@ -29,14 +29,13 @@ function Lists(props) {
 
     const [showForm, toggleShowForm] = useState(false);
 
-    useEffect(() => {
+    useEffect(() => {   
         async function getData() {
             const res = await axios.get('/api/all');
             updateData(res.data.lists);
         }
         getData();
     },[updateData])
-    
 
     function handleToggleShowForm() {
         toggleShowForm(!showForm);
@@ -48,7 +47,7 @@ function Lists(props) {
 
     const lists = data.map(list => {
         return (
-            <Listsbox {...list} key={list._id} />
+            <Listsbox {...list} key={list._id} updateData={updateData} data={data} />
         )
     })
 

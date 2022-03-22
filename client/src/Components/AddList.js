@@ -109,7 +109,7 @@ function AddList(props) {
             <div className={`${classes.addList} ${inputError ? classes.inputError : null}`}>
                 <input type="text" value={title} onChange={handleInput} autoFocus="on" />
                 <div className={classes.buttonContainer}>
-                    <button onClick={handleAddList}>ADD ITEM</button>
+                    <button onClick={handleAddList}>ADD</button>
                     <button onClick={handleToggleShowForm}>CANCEL</button>
                 </div>
             </div>

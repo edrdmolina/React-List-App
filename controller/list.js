@@ -25,8 +25,9 @@ module.exports = {
     },
     async deleteList(req, res, next) {
         const { listId } = req.params;
-        await List.findByIdAndDelete({ _id: listId })
-        return res.status(200).json({ redirectUrl: '/' })
+        console.log(req.body)
+        await List.findByIdAndDelete(listId)
+        return res.status(200)
     },
     // ITEMS
     async addItem(req, res, next) {

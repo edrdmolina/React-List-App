@@ -1,5 +1,5 @@
 // Libraries
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { createUseStyles } from 'react-jss';
 
@@ -7,7 +7,7 @@ import { createUseStyles } from 'react-jss';
 import useChangeInput from "../hooks/useChangeInput";
 
 // Components
-import DeleteUserConfirmation from './components/DeleteUserConfirmation';
+import DeleteUserConfirmation from '../Components/DeleteUserConfirmation';
 import PWConfirmation from '../Components/PWConfirmation';
 import PWValidation from "../Components/PWValidation";
 
@@ -174,6 +174,9 @@ function User(props) {
     const [message, updateMessage] = useState('');
     const [isError, updateIsError] = useState(false);
 
+    // REDIRECTS if there is no user.
+    if(!user.username) window.location.href = '/';
+    
     function handleSubmit(e) {
         e.preventDefault();
         updateUser();
