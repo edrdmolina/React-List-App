@@ -2,9 +2,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { createUseStyles } from 'react-jss';
+import { Link } from 'react-router-dom';
 
 // Components
 import Token from '../Components/Token';
+import Logo from '../Icons/Logo-SM.svg'
 
 // Hooks
 import useChangeInput from "../hooks/useChangeInput";
@@ -20,6 +22,9 @@ const useStyles = createUseStyles({
         alignItems: 'center',
         color: '#FCFCFC',
 
+        '& img': {
+            display: 'none',
+        },
     },
     form: {
         height: '250px',
@@ -69,6 +74,16 @@ const useStyles = createUseStyles({
             }
         },
     },
+
+    '@media (max-width: 768px)': {
+        forgotPW: {
+            '& img': {
+                display: 'inline',
+                height: '100px',
+                margin: '0 0 2rem 0'
+            }
+        }
+    }
 })
 
 function ForgotPw() {
@@ -104,7 +119,9 @@ function ForgotPw() {
 
     return (
         <div className={classes.forgotPW}>
-
+            <Link to='/'>
+                <img src={Logo} alt="Logo" className={classes.logo} />
+            </Link>
             <form onSubmit={handleSubmit} className={`${classes.form} ${isError ? 'shake' : null}`}>
                 <h1>FORGOT PASSWORD</h1>
                 <p>{message}</p>

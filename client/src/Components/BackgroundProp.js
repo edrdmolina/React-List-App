@@ -6,8 +6,8 @@ import Body from '../Images/iPhone.png'
 // Styles
 const useStyles = createUseStyles({
     prop: {
-        
-    }
+    
+    },
 })
 
 function BackgroundProp() {

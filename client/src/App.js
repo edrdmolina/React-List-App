@@ -52,14 +52,16 @@ function AppRefactored() {
         }
     }
 
-    function getScreenWidth() {
-        updateScreenWidth(window.innerWidth);
-    }
+    const getScreenWidth = () => updateScreenWidth(window.innerWidth);
     
     return (
         <div className={classes.app}>
-            < Navbar user={user} updateUser={updateUser}/>
-            < Routes user={user} data={data} updateData={updateData} getUser={getUser} getData={getData} />
+            < Navbar user={user} updateUser={updateUser} screenWidth={screenWidth} />
+            < Routes 
+                user={user} data={data} 
+                updateData={updateData} getUser={getUser} 
+                getData={getData} screenWidth={screenWidth} 
+            />
         </div>
     )
 }

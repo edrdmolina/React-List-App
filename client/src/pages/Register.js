@@ -1,7 +1,7 @@
 // Libraries
 import React, { useState } from "react";
 import axios from "axios";
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { createUseStyles } from 'react-jss';
 
 // Hooks
@@ -10,6 +10,7 @@ import useChangeInput from "../hooks/useChangeInput";
 // Components
 import PWConfirmation from '../Components/PWConfirmation';
 import PWValidation from "../Components/PWValidation";
+import Logo from '../Icons/Logo-SM.svg'
 
 // Styles
 const useStyles = createUseStyles({
@@ -27,7 +28,10 @@ const useStyles = createUseStyles({
             '& a': {
                 color: '#FCFCFC'
             }
-        }
+        },
+        '& img': {
+            display: 'none',
+        },
 
     },
     form: {
@@ -122,6 +126,13 @@ const useStyles = createUseStyles({
         },
         submitRow: {
             width: '80%'
+        },
+        register: {
+            '& img': {
+                display: 'inline',
+                height: '100px',
+                margin: '0 0 2rem 0'
+            }
         }
     }
 })
@@ -175,6 +186,9 @@ function Register() {
 
     return (
         <div className={classes.register}>
+            <Link to='/'>
+                <img src={Logo} alt="Logo" className={classes.logo} />
+            </Link>
             <form onSubmit={registerUser} className={`${classes.form} ${isError ? classes.inputError : null}`}>
                 <h1>Sign Up</h1>
                 <p>{message}</p>
@@ -219,7 +233,7 @@ function Register() {
             </form>
             <p>
                 Already have an account? 
-                <NavLink to='/login'> Log in here.</NavLink>
+                <Link to='/login'> Log in here.</Link>
             </p>
         </div>
     )

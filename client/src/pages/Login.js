@@ -4,6 +4,9 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { createUseStyles } from 'react-jss';
 
+// Components
+import Logo from '../Icons/Logo-SM.svg'
+
 // Hooks
 import useChangeInput from "../hooks/useChangeInput";
 
@@ -17,6 +20,10 @@ const useStyles = createUseStyles({
         justifyContent: 'center',
         alignItems: 'center',
         color: '#FCFCFC',
+
+        '& img': {
+            display: 'none',
+        },
 
         '& p': {
             margin: '1rem',
@@ -106,6 +113,14 @@ const useStyles = createUseStyles({
         },
         submitRow: {
             width: '80%'
+        },
+
+        login: {
+            '& img': {
+                display: 'inline',
+                height: '100px',
+                margin: '0 0 2rem 0'
+            }
         }
     }
 })
@@ -152,6 +167,9 @@ function Login() {
 
     return (
         <div className={classes.login}>
+            <Link to='/'>
+                <img src={Logo} alt="Logo" className={classes.logo} />
+            </Link>
             <form onSubmit={loginUser} className={`${classes.form} ${isError ? classes.inputError : null}`}>
                 <h1>Log in</h1>
                 <p>{message}</p>

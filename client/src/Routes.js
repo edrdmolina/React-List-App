@@ -22,7 +22,7 @@ function Routes(props) {
                 />
             ) : (
                 <Route exact path='/'
-                    render={ routeProps => <Home { ...routeProps } /> }
+                    render={ routeProps => <Home { ...routeProps } {...props} /> }
                 />
             )}
             <Route exact path='/login'

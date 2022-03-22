@@ -35,46 +35,82 @@ const useStyles = createUseStyles({
             textDecoration: 'none',
             margin: '0 1rem'
         }
+    },
+
+    '@media (max-width: 768px)': {
+        container: {
+            bottom: '0',
+            backgroundColor: '#000270',
+            height: '4rem',
+        },
+        navLinks: {
+            display: 'flex',
+            width: '100%',
+            justifyContent: 'space-around',
+            color: '#FCFCFC'
+        }
     }
+
 })
 
 function Navbar(props) {
     const classes = useStyles();
-    const { user, updateUser } = props;
-
+    const { user, updateUser, screenWidth } = props;
+    
     async function logout() {
         await axios.get('/api/users/logout');
         updateUser({});
     }
 
-    return (
-        <div className={classes.container}>
-            <nav className={classes.nav}>
-                <NavLink to="/">
-                    <img src={Logo} alt="Logo" className={classes.logo} />
-                </NavLink>
-                { user.username ? (
+    if(screenWidth < 768 && !user.username) return <div />
+    else if (screenWidth < 768) {
+        return (
+            <div className={classes.container}>
+                <nav className={classes.nav}>
                     <div className={classes.navLinks}>
                         <NavLink to="/" onClick={logout}>
-                            Logout
+                            <i className="fas fa-sign-out-alt fa-2x" />
+                        </NavLink>
+                        <NavLink to='/'>
+                            <i className="fas fa-home fa-2x" />
                         </NavLink>
                         <NavLink to='/user'>
-                            {user.username} <i className="fas fa-user" />
+                            <i className="fas fa-user fa-2x" />
                         </NavLink>
                     </div>
-                ) : (
-                <div className={classes.navLinks}>
-                    <NavLink to="/register">
-                        Sign up
+                </nav>
+            </div>
+        )
+    } else {
+        return (
+            <div className={classes.container}>
+                <nav className={classes.nav}>
+                    <NavLink to="/">
+                        <img src={Logo} alt="Logo" className={classes.logo} />
                     </NavLink>
-                    <NavLink to="login">
-                        Log in
-                    </NavLink>
-                </div>
-                )}
-            </nav>
-        </div>
-    )
+                    { user.username ? (
+                        <div className={classes.navLinks}>
+                            <NavLink to="/" onClick={logout}>
+                                Logout
+                            </NavLink>
+                            <NavLink to='/user'>
+                                {user.username} <i className="fas fa-user" />
+                            </NavLink>
+                        </div>
+                    ) : (
+                    <div className={classes.navLinks}>
+                        <NavLink to="/register">
+                            Sign up
+                        </NavLink>
+                        <NavLink to="login">
+                            Log in
+                        </NavLink>
+                    </div>
+                    )}
+                </nav>
+            </div>
+        )
+    }
 }
 
 export default Navbar
