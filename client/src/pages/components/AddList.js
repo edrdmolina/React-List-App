@@ -67,7 +67,7 @@ const useStyles = createUseStyles({
     inputError: {
         position: 'relative',
         animation: '$shake 0.05s linear infinite alternate',
-
+        boxShadow: '0 0 5px #C03546 !important',
     },
     '@keyframes shake': {
         from: {

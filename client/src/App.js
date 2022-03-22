@@ -28,12 +28,10 @@ function AppRefactored() {
     const [screenWidth, updateScreenWidth] = useState(0);
 
     useEffect(() => {
-        getUser();
-        getData();
+        if(!user.username) getUser();
         getScreenWidth();
         window.onresize = getScreenWidth;
-
-    }, [])
+    }, [user])
     
     async function getUser() {
         const res = await axios.get('/api/users/getUser');
@@ -42,27 +40,16 @@ function AppRefactored() {
         }
     }
 
-    async function getData() {
-        const res = await axios.get('/api/all');
-        updateData(res.data.lists);
-    }
-
     function getScreenWidth() {
         updateScreenWidth(window.innerWidth);
-    }
-
-    function addList(newList) {
-        updateData([...data, newList]);
     }
     
     return (
         <div className={classes.app}>
             < Navbar user={user} updateUser={updateUser}/>
-            < Routes user={user} data={data} updateData={updateData} getData={getData} addList={addList} />
+            < Routes user={user} data={data} updateData={updateData} />
         </div>
     )
-    
-
 }
 
 export default AppRefactored

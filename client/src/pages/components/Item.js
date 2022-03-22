@@ -65,6 +65,10 @@ const useStyles = createUseStyles({
         justifyContent: 'space-evenly',
         '& i': {
             cursor: 'pointer',
+
+            '&:active': {
+                transform: 'translate(1px,1px)'
+            }
         }
     },
     editQty: {
@@ -74,6 +78,27 @@ const useStyles = createUseStyles({
         justifyContent: 'space-between',
         alignItems: 'center',
         fontSize: '1.75rem',
+
+        '& i': {
+            cursor: 'pointer',
+
+            '&:active': {
+                transform: 'translate(1px,1px)'
+            }
+        }
+    },
+    inputError: {
+        position: 'relative',
+        animation: '$shake 0.05s linear infinite alternate',
+        boxShadow: '0 0 5px #C03546 !important',
+    },
+    '@keyframes shake': {
+        from: {
+            left: '3px',
+        },
+        to: {
+            right: '3px',
+        }
     }
 })
 
@@ -87,6 +112,7 @@ function Item(props) {
     const [titleInput, updateTitleInput] = useState(title);
     const [quantityInput, updateQuantityInput] = useState(quantity);
     const [isEdit, toggleIsEdit] = useState(false);
+    const [inputError, updateInputError] = useState(false);
 
     const handleTitleInputChange = e => updateTitleInput(e.target.value);
     const handleQtyIncrement = () => updateQuantityInput(quantityInput + 1);
@@ -102,6 +128,11 @@ function Item(props) {
     const handleDeleteItem = () => deleteItem(_id)
 
     function handleSaveChanges() {
+        if(titleInput.length === 0) {
+            updateInputError(true);
+            setTimeout(() => updateInputError(false), 300);
+            return;
+        }
         editItem(_id, titleInput, quantityInput);
         toggleIsEdit(!isEdit);
     }
@@ -123,7 +154,12 @@ function Item(props) {
             { isEdit ? (
                 <SwiperSlide>
                     <div className={`${classes.itemRow} ${classes.editForm}`}>
-                        <input type='text' value={titleInput} onChange={handleTitleInputChange} />
+                        <input 
+                            type='text' 
+                            value={titleInput} 
+                            onChange={handleTitleInputChange} 
+                            className={inputError ? classes.inputError : null} 
+                        />
                         <div className={classes.editQty}>
                             <i className='far fa-minus-square minus' onClick={handleQtyDecrement} />
                             {quantityInput}

@@ -9,15 +9,21 @@ import Logo from '../Icons/Logo-SM.svg'
 
 // Styles
 const useStyles = createUseStyles({
-    nav: {
-        width: '100vw',
-        maxWidth: '1200px',
+    container: {
+        width: '100%',
         height: '5rem',
+        position: 'fixed',
+        display: 'flex',
+        justifyContent: 'center'
+    },
+    nav: {
+        width: '100%',
+        maxWidth: '1200px',
+        height: '100%',
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        margin: '0 auto'
     },
     logo: {
         marginLeft: '2rem'
@@ -42,30 +48,32 @@ function Navbar(props) {
     }
 
     return (
-        <nav className={classes.nav}>
-            <NavLink to="/">
-                <img src={Logo} alt="Logo" className={classes.logo} />
-            </NavLink>
-            { user.username ? (
+        <div className={classes.container}>
+            <nav className={classes.nav}>
+                <NavLink to="/">
+                    <img src={Logo} alt="Logo" className={classes.logo} />
+                </NavLink>
+                { user.username ? (
+                    <div className={classes.navLinks}>
+                        <NavLink to="/" onClick={logout}>
+                            Logout
+                        </NavLink>
+                        <NavLink to='/user'>
+                            {user.username} <i className="fas fa-user" />
+                        </NavLink>
+                    </div>
+                ) : (
                 <div className={classes.navLinks}>
-                    <NavLink to="/" onClick={logout}>
-                        Logout
+                    <NavLink to="/register">
+                        Sign up
                     </NavLink>
-                    <NavLink to='/'>
-                        {user.username} <i className="fas fa-user" />
+                    <NavLink to="login">
+                        Log in
                     </NavLink>
                 </div>
-            ) : (
-            <div className={classes.navLinks}>
-                <NavLink to="/register">
-                    Register
-                </NavLink>
-                <NavLink to="login">
-                    Login
-                </NavLink>
-            </div>
-            )}
-        </nav>
+                )}
+            </nav>
+        </div>
     )
 }
 

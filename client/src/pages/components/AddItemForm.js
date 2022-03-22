@@ -36,7 +36,6 @@ const useStyles = createUseStyles({
             }
         }
     },
-
     quantityContainer: {
         width: '20%',
         display: 'flex',
@@ -47,6 +46,23 @@ const useStyles = createUseStyles({
 
         '& i': {
             cursor: 'pointer',
+
+            '&:active': {
+                transform: 'translate(1px,1px)'
+            }
+        }
+    },
+    inputError: {
+        position: 'relative',
+        animation: '$shake 0.05s linear infinite alternate',
+        boxShadow: '0 0 5px #C03546 !important',
+    },
+    '@keyframes shake': {
+        from: {
+            left: '3px',
+        },
+        to: {
+            right: '3px',
         }
     }
 })
@@ -57,6 +73,7 @@ function AddItemForm(props) {
 
     const [titleInput, updateTitleInput] = useState('');
     const [quantityInput, updateQuantityInput] = useState(1);
+    const [inputError, updateInputError] = useState(false);
 
 
     function handleTitleInputChange(e) {
@@ -71,6 +88,11 @@ function AddItemForm(props) {
 
     function handleSubmit(e) {
         e.preventDefault();
+        if(titleInput.length === 0) {
+            updateInputError(true);
+            setTimeout(() => updateInputError(false), 300);
+            return;
+        }
         addItem(titleInput, quantityInput);
         updateTitleInput('');
         updateQuantityInput(1);
@@ -79,7 +101,13 @@ function AddItemForm(props) {
 
     return (
         <form className={classes.addItemForm} onSubmit={handleSubmit}>
-            <input id="addItemInput" type='text' value={titleInput} onChange={handleTitleInputChange} />
+            <input 
+                id="addItemInput" 
+                type='text' 
+                value={titleInput} 
+                onChange={handleTitleInputChange}
+                className={inputError ? classes.inputError : null} 
+            />
             <div className={classes.quantityContainer}>
                 <i className='far fa-minus-square minus' onClick={handleQtyDecrement} />
                 {quantityInput}

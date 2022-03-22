@@ -1,6 +1,7 @@
 // Libraries
 import React, { useState } from 'react';
 import axios from 'axios';
+import { createUseStyles } from 'react-jss';
 
 // Components
 import Token from './components/Token';
@@ -9,11 +10,69 @@ import Token from './components/Token';
 import useChangeInput from "../hooks/useChangeInput";
 
 // Styles
-import '../styles/ForgotPw.css';
+const useStyles = createUseStyles({
+    forgotPW: {
+        height: '100vh',
+        width: '100vw',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: '#FCFCFC',
+
+    },
+    form: {
+        height: '250px',
+        width: '90%',
+        maxWidth: '500px',
+        borderRadius: '10px',
+        boxShadow: '0 0 10px #00000070',
+        backgroundColor: '#FCFCFC12',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        marginBottom: '10rem',
+
+        '& p': {
+            margin: '0',
+        },
+
+        '& button': {
+            backgroundColor: '#4F51BC',
+            color: '#FCFCFC',
+            padding: '0.25rem 0.75rem',
+            borderRadius: '15px',
+            textTransform: 'uppercase',
+
+            '&:active': {
+                backgroundColor: '#4F51BC32',
+            }
+        }
+    },
+
+    inputGroup: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '65%',
+        minHeight: '4.25rem',
+
+        '& input': {
+            boxShadow: '0px 0px 10px #4F51BC',
+            color: '#FCFCFC',
+            height: '2rem',
+            borderRadius: '5px',
+            textIndent: '1rem',
+
+            '&:focus': {
+                boxShadow: '0px 0px 10px #FCFCFC',
+            }
+        },
+    },
+})
 
 function ForgotPw() {
-    // Initialize hooks
-
+    const classes = useStyles();
     // State
     const [email, updateEmail, clearEmail] = useChangeInput('');
     const [message, updateMessage] = useState('');
@@ -44,20 +103,18 @@ function ForgotPw() {
     }
 
     return (
-        <div className='ForgotPw'>
-            <h1>RETRIEVE RESET TOKEN</h1>
+        <div className={classes.forgotPW}>
 
-            <form onSubmit={handleSubmit} className={`Form ${isError ? 'shake' : null}`}>
-                <p className='forgot-message'>{message}</p>
-                <div className='Input-group'>
+            <form onSubmit={handleSubmit} className={`${classes.form} ${isError ? 'shake' : null}`}>
+                <h1>FORGOT PASSWORD</h1>
+                <p>{message}</p>
+                <div className={classes.inputGroup}>
                     <label htmlFor='email'>Email</label>
                     <input type='email' id='email' name='email' value={email} 
                         onChange={updateEmail}
                     />
                 </div>
-                <div className='Form-footer'>
-                    <button type='submit' className='Token-btn'>Send Token</button>
-                </div>
+                <button type='submit'>Send Token</button>
             </form>
 
             { tokenInput ? ( <Token showToken={showToken} /> ) : ( null )}

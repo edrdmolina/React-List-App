@@ -2,16 +2,92 @@
 import React, { useState } from "react";
 import { useLocation } from 'react-router-dom'
 import axios from "axios";
+import { createUseStyles } from 'react-jss';
 
 // Hooks
 import useChangeInput from "../hooks/useChangeInput";
 
 // Components 
-import PWConfirmation from './components/PWConfirmation';
+import PWConfirmation from '../Components/PWConfirmation';
+import PWValidation from "../Components/PWValidation";
 
 // Styles
+const useStyles = createUseStyles({
+    resetPW: {
+        height: '100vh',
+        width: '100vw',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: '#FCFCFC',
+
+    },
+    form: {
+        height: '300px',
+        width: '90%',
+        maxWidth: '500px',
+        borderRadius: '10px',
+        boxShadow: '0 0 10px #00000070',
+        backgroundColor: '#FCFCFC12',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+
+        '& p': {
+            margin: '0',
+        },
+
+        '& button': {
+            backgroundColor: '#4F51BC',
+            color: '#FCFCFC',
+            padding: '0.25rem 0.75rem',
+            borderRadius: '15px',
+            textTransform: 'uppercase',
+
+            '&:active': {
+                backgroundColor: '#4F51BC32',
+            }
+        }
+    },
+
+    inputGroup: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '65%',
+        minHeight: '4.25rem',
+
+        '& input': {
+            boxShadow: '0px 0px 10px #4F51BC',
+            color: '#FCFCFC',
+            height: '2rem',
+            borderRadius: '5px',
+            textIndent: '1rem',
+
+            '&:focus': {
+                boxShadow: '0px 0px 10px #FCFCFC',
+            }
+        },
+    },
+
+    disabled: {
+        backgroundColor: '#0F0F0F5F !important',
+        cursor: 'not-allowed',
+    },
+    password: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        
+        '& p' :{
+            fontSize: '0.75rem'
+        }
+    },
+})
 
 function ResetPw() {
+    const classes = useStyles();
+
     // Initialize hooks
     const location = useLocation();
 
@@ -20,6 +96,8 @@ function ResetPw() {
     const [confirmNewPassword, updateConfirmNewPassword, clearConfirmNewPassword] = useChangeInput('');
     const [message, updateMessage] = useState('');
     const { user } = location.state
+
+
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -54,30 +132,34 @@ function ResetPw() {
     }
 
     return (
-        <div className='Login'>
-            <h1>RESET PW PAGE</h1>
-            <p>{message}</p>
-            <form onSubmit={handleSubmit} className='Form'>
-                <div className='Input-group'>
-                    <label htmlFor='newPassword' className='label'>New Password</label>
-                    
+        <div className={classes.resetPW}>
+            <form onSubmit={handleSubmit} className={classes.form}>
+                <h1>RESET PASSWORD</h1>
+                <p>{message}</p>
+                <div className={classes.inputGroup}>
+                    <label htmlFor='newPassword' className={classes.password}>
+                        New Password
+                        <PWValidation password={newPassword} />
+                    </label>
                     <input type='password' id='newPassword' value={newPassword} onChange={updateNewPassword}
                     />
                 </div>
-                <div className='Input-group'>
-                    <label htmlFor='confirmNewPassword'>Confirm New Password</label>
-                    <input type='password' id='confirmNewPassword' value={confirmNewPassword}
-                        onChange={updateConfirmNewPassword}
+                <div className={classes.inputGroup}>
+                    <label htmlFor='confirmNewPassword' className={classes.password}>
+                        Confirm New Password
+                        <PWConfirmation password={newPassword} passwordConfirmation={confirmNewPassword} />
+                    </label>
+                    <input 
+                        type='password' id='confirmNewPassword'
+                        value={confirmNewPassword} onChange={updateConfirmNewPassword}
                     />
-                    <PWConfirmation password={newPassword} passwordConfirmation={confirmNewPassword} />
+                    
                 </div>
-                <div className='Form-footer'>
-                    <button 
-                        type='submit'
-                        className={`Register-btn ${isDisabled ? 'Disabled' : ''}`}
-                        disabled={isDisabled}
-                    >Save Changes</button>
-                </div>
+                <button 
+                    type='submit'
+                    className={`${isDisabled ? classes.disabled : null}`}
+                    disabled={isDisabled}
+                >Save Changes</button>
             </form>
         </div>
     )

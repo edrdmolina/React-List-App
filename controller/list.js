@@ -30,7 +30,6 @@ module.exports = {
     },
     // ITEMS
     async addItem(req, res, next) {
-        console.log("Hitting add item")
         // Declare variables
         const { name, qty, listId } = req.body;
         const { _id } = req.user;
@@ -89,7 +88,7 @@ module.exports = {
                     });
                 break;
             default:
-                console.log('Error on item list sort.')
+                console.error('Error on item list sort.')
         }
         if (!list) {
             return res.status(200).json({

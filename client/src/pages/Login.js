@@ -2,15 +2,116 @@
 import React, { useState } from "react";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { createUseStyles } from 'react-jss';
 
 // Hooks
 import useChangeInput from "../hooks/useChangeInput";
 
 // Styles
-import '../styles/Login.css';
-import '../styles/Register.css';
+const useStyles = createUseStyles({
+    login: {
+        height: '100vh',
+        width: '100vw',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        color: '#FCFCFC',
+
+        '& p': {
+            margin: '1rem',
+            '& a': {
+                color: '#FCFCFC'
+            }
+        }
+    },
+    form: {
+        height: '400px',
+        width: '90%',
+        maxWidth: '500px',
+        borderRadius: '10px',
+        boxShadow: '0 0 10px #00000070',
+        backgroundColor: '#FCFCFC12',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+
+        '& p': {
+            margin: '0',
+        }
+    },
+    inputGroup: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '65%',
+        minHeight: '4.25rem',
+
+        '& input': {
+            boxShadow: '0px 0px 10px #4F51BC',
+            color: '#FCFCFC',
+            height: '2rem',
+            borderRadius: '5px',
+            textIndent: '1rem',
+
+            '&:focus': {
+                boxShadow: '0px 0px 10px #FCFCFC',
+            }
+        },
+    },
+    submitRow: {
+        width: '65%',
+        display: 'flex',
+        margin: '1rem 0',
+
+        '& button': {
+            backgroundColor: '#4F51BC',
+            color: '#FCFCFC',
+            padding: '0.25rem 0.75rem',
+            borderRadius: '15px',
+            marginLeft: 'auto',
+            textTransform: 'uppercase',
+
+            '&:active': {
+                backgroundColor: '#4F51BC32',
+            }
+        }
+    },
+    loginLinks: {
+        width: '90%',
+        maxWidth: '500px',
+    },
+    disabled: {
+        backgroundColor: '#0F0F0F5F !important',
+        cursor: 'not-allowed',
+    },
+
+    inputError: {
+        position: 'relative',
+        animation: '$shake 0.05s linear infinite alternate',
+        boxShadow: '0 0 5px #C03546 !important',
+    },
+    '@keyframes shake': {
+        from: {
+            left: '3px',
+        },
+        to: {
+            right: '3px',
+        }
+    },
+
+    '@media (max-width: 768px)': {
+        inputGroup: {
+            width: '80%'
+        },
+        submitRow: {
+            width: '80%'
+        }
+    }
+})
 
 function Login() {
+    const classes = useStyles();
 
     // State
     const [username, updateUsername, clearUsername] = useChangeInput('');
@@ -44,50 +145,48 @@ function Login() {
         updateIsError(true);
         setTimeout(() => {
             updateIsError(false);
-        }, 1000);
+        }, 500);
         clearUsername();
         clearPassword();
     }
 
     return (
-        <div className='Login'>
-            <h1>Login</h1>
-            <form onSubmit={loginUser} className={`Form ${isError ? 'shake' : null}`}>
-                <div className='Login-error'>
-                    <p>{message}</p>
-                </div>
-                <div className='Input-group'>
+        <div className={classes.login}>
+            <form onSubmit={loginUser} className={`${classes.form} ${isError ? classes.inputError : null}`}>
+                <h1>Log in</h1>
+                <p>{message}</p>
+                <div className={classes.inputGroup}>
                     <label htmlFor='username'>Username</label>
                     <input
                         type='text' name='username' id='username'
                         value={username} onChange={updateUsername}
                     />
                 </div>
-                <div className='Input-group'>
+                <div className={classes.inputGroup}>
                     <label htmlFor='password'>Password</label>
                     <input
                         type='password' name='password' id='password'
                         value={password} onChange={updatePassword}
                     />
                 </div>
-                <div className='Form-footer'>
+                <div className={classes.submitRow}>
                         <button 
                             type='submit'
-                            className={`Login-btn ${isDisabled ? 'Disabled' : ''}`}
+                            className={`${isDisabled ? classes.disabled : null}`}
                             disabled={isDisabled}
                         >Sign In</button>
                     </div>
             </form>
-            <div className='login-message'>
-                    <p>
-                    Don't have an account? 
-                    <Link to='/register'> Sign up here.</Link>
-                    </p>
-                    <p>
-                    Forgot login? 
-                    <Link to='/forgot-pw'> Click here.</Link>
-                    </p> 
-                </div>
+            <div className={classes.loginLinks}>
+                <p>
+                Don't have an account? 
+                <Link to='/register'> Sign up here.</Link>
+                </p>
+                <p>
+                Forgot login? 
+                <Link to='/forgot-pw'> Click here.</Link>
+                </p> 
+            </div>
         </div>
     )
 }

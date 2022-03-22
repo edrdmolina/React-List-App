@@ -45,12 +45,21 @@ const middleware = {
     },
     registrationValidation: async (req, res, next) => {
         const { email, username, password, confirmPassword } = req.body;
+        const validationRegex =  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
+
+        const isValid = validationRegex.test(password);
+        if (!isValid) {
+            return res.status(400).json({
+                success: false,
+                message: 'Password is invalid!'
+            })
+        }
 
         // Check if passwords match
         if (password != confirmPassword) {
             return res.status(400).json({
                 success: false,
-                message: 'Passwords do not match'
+                message: 'Passwords do not match!'
             })
         }
 

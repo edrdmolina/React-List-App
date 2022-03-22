@@ -1,6 +1,7 @@
 // Libraries
 import React, { useState, useEffect } from 'react';
 import { createUseStyles } from 'react-jss';
+import axios from 'axios';
 
 // Components
 import Listsbox from './components/Listsbox';
@@ -18,25 +19,32 @@ const useStyles = createUseStyles({
         justifyContent: 'center',
         alignItems: 'center',
         gap: '2rem',
-        padding: '5rem 0',
+        padding: '8rem 0 5rem 0',
     }
 })
 
 function Lists(props) {
-    const { data, addList, getData } = props;
+    const { data, updateData } = props;
     const classes = useStyles();
 
     const [showForm, toggleShowForm] = useState(false);
 
     useEffect(() => {
-      getData();
-    }, [getData])
+        async function getData() {
+            const res = await axios.get('/api/all');
+            updateData(res.data.lists);
+        }
+        getData();
+    },[updateData])
     
 
     function handleToggleShowForm() {
         toggleShowForm(!showForm);
     }
 
+    function addList(newList) {
+        updateData([...data, newList]);
+    }
 
     const lists = data.map(list => {
         return (

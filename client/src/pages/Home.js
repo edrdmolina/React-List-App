@@ -1,30 +1,62 @@
 //  Libraries
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { createUseStyles } from "react-jss";
 
 // Styles
-const useStylesLargeScreen = createUseStyles({
+const useStyles = createUseStyles({
+    home: {
+        width: '100%',
+        height: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    container: {
+        border: '1px solid #FCFCFC',
+        backgroundColor: '#FCFCFC09',
+        borderRadius: '15px',
+        height: '300px',
+        width: '90%',
+        maxWidth: '500px',
+        boxShadow: '0 0 10px rgba(0,0,0,0.5)',
+        color: '#FCFCFC',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
 
-})
-const useStylesSmallScreen = createUseStyles({
+        '& h1': {
+            margin: '15% 0 2% 0',
+        },
 
+        '& p': {
+            margin: '0rem 0 10% 0',
+            
+        },
+        '& button': {
+            color: '#FCFCFC',
+            backgroundColor: '#4F51BC',
+            padding: '0.25rem 0.75rem',
+            borderRadius: '15px',
+
+            '&:active': {
+                backgroundColor: '#4F51BC32',
+            }
+        }
+    }
 })
 
 function Home() {
-    
+    const classes = useStyles();
 
     return (
-        <div className='Home'>
-            <div className='Container'>
-                <h1>LIST APP</h1>
+        <div className={classes.home}>
+            <div className={classes.container}>
+                <h1>GET DONE</h1>
                 <p>
-                    An app designed to create checklists for everyday tasks.
+                    Never miss another item at the store.
                 </p>
-                <div className='Buttons'>
-                    <Link to='/register'><button>Sign Up</button></Link>
-                    <Link to='/Login'><button>Log In</button></Link>
-                </div>
+                <button onClick={() => window.location.href = '/register'}>GET STARTED</button>
             </div>
         </div>
     )

@@ -1,5 +1,5 @@
 // Libraries
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import axios from 'axios';
 
@@ -14,7 +14,7 @@ const useStyles = createUseStyles({
         flexDirection: 'column',
         alignItems: 'center',
         color: '#FCFCFC',
-        padding: '3rem 0',
+        padding: '8rem 0 5rem 0',
 
         '& h2': {
             textTransform: 'uppercase',
@@ -75,16 +75,12 @@ const useStyles = createUseStyles({
 
 function Lists(props) {
     const classes = useStyles();
-    const { data, updateData, getData } = props;
+    const { data, updateData } = props;
     const { listId } = props.match.params;
     const listData = data.filter(l => l._id === listId)[0];
 
     const [sort, updateSort] = useState(0);
     const [items, updateItems] = useState([...listData.items]);
-
-    useEffect(() => {
-      getData();
-    }, [getData])
     
     async function sortItems() {
         if (sort === 3) updateSort(0);
@@ -111,6 +107,20 @@ function Lists(props) {
             await axios.delete(`/api/delete-item/${itemId}`)
         }   
         catch (error) {
+            console.error(error)
+        }
+    }
+    async function deleteItems() {
+        // Remove from frontend
+        const newItems = items.filter(i => !i.checked);
+        const checkedItems = items.filter(i => i.checked);
+        if (!checkedItems.length) return;
+        updateItems([...newItems]);
+        // Remove from backend
+        try {
+            const input = { items: [...checkedItems] };
+            axios.post(`/api/removeItems/${listId}`, input)
+        } catch (error) {
             console.error(error)
         }
     }
@@ -164,7 +174,7 @@ function Lists(props) {
                         <AddItemForm listId={listId} addItem={addItem} />
                     </div>
                     <div className={classes.tableRow}>
-                        <button className={classes.deleteItemsButton} /* onClick={this.deleteItems} */ >CLEAR CHECKED ITEMS</button>
+                        <button className={classes.deleteItemsButton} onClick={deleteItems} >CLEAR CHECKED ITEMS</button>
                     </div>
                 </div>
             </div>
