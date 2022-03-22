@@ -11,6 +11,7 @@ import Register from './pages/Register';
 import User from './pages/User';
 import ForgotPw from './pages/ForgotPw';
 import ResetPw from './pages/ResetPw';
+import Error from './pages/Error';
 
 function Routes(props) {
     return (
@@ -39,12 +40,15 @@ function Routes(props) {
             <Route exact path='/User'
                 render={ routeProps => <User { ...routeProps } user={props.user} getUser={props.getUser} /> }
             />
+            <Route exact path='/error'
+                render={ () => <Error /> }
+            />
             <Route exact path='/:listId'
                 render={ routeProps => <List { ...routeProps } { ...props } /> }
             />
             
             {/* 404 NOT FOUND */}
-            <Redirect to='/'/>
+            <Redirect to='/error'/>
         </Switch>
     )
     

@@ -1,5 +1,5 @@
 // Libraries
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from 'axios';
 import { createUseStyles } from 'react-jss';
 
@@ -175,7 +175,7 @@ function User(props) {
     const [isError, updateIsError] = useState(false);
 
     // REDIRECTS if there is no user.
-    if(!user.username) window.location.href = '/';
+    if(!user.username) window.location.href = '/error';
     
     function handleSubmit(e) {
         e.preventDefault();

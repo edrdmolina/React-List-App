@@ -84,7 +84,7 @@ function Lists(props) {
         const [items, updateItems] = useState([]);
 
         // REDIRECTS if there is no data.
-        if(!data.length) window.location.href = '/';
+        if(!data.length) window.location.href = '/error';
 
         useEffect(() => {
             updateItems([...listData.items])
@@ -148,8 +148,6 @@ function Lists(props) {
             const result = await axios.post(`/api/${listId}`, input);
             updateItems([...items, result.data.item]);
         }
-
-        
 
         const itemComponents = items.map(item => {
             return (

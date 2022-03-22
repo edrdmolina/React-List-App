@@ -35,15 +35,21 @@ function AppRefactored() {
     }, [user, updateData])
     
     async function getUser() {
-        const res = await axios.get('/api/users/getUser');
-        if(res.data.user) {
-            updateUser(res.data.user);
+        try {
+            const res = await axios.get('/api/users/getUser');
+            if(res.data.user) updateUser(res.data.user);
+        } catch(error) {
+            console.error(error)
         }
     }
 
     async function getData() {
-        const res = await axios.get('/api/all');
-        updateData(res.data.lists);
+        try {
+            const res = await axios.get('/api/all');
+            updateData(res.data.lists);
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     function getScreenWidth() {
