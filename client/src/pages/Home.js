@@ -1,19 +1,24 @@
 //  Libraries
 import React from 'react';
 import { createUseStyles } from "react-jss";
+import { Link } from 'react-router-dom';
+
+import BackgroundProp from '../Components/BackgroundProp';
 
 // Styles
 const useStyles = createUseStyles({
     home: {
         width: '100%',
+        maxWidth: '1200px',
         height: '100vh',
+        margin: '0 auto',
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: 'space-around',
         alignItems: 'center',
     },
     container: {
         border: '1px solid #FCFCFC',
-        backgroundColor: '#FCFCFC09',
+        backgroundColor: '#FCFCFC12',
         borderRadius: '15px',
         height: '300px',
         width: '90%',
@@ -33,11 +38,12 @@ const useStyles = createUseStyles({
             margin: '0rem 0 10% 0',
             
         },
-        '& button': {
+        '& a': {
             color: '#FCFCFC',
             backgroundColor: '#4F51BC',
             padding: '0.25rem 0.75rem',
             borderRadius: '15px',
+            textDecoration: 'none',
 
             '&:active': {
                 backgroundColor: '#4F51BC32',
@@ -56,8 +62,9 @@ function Home() {
                 <p>
                     Never miss another item at the store.
                 </p>
-                <button onClick={() => window.location.href = '/register'}>GET STARTED</button>
+                <Link to='/register' >GET STARTED</Link>
             </div>
+            < BackgroundProp />
         </div>
     )
 }

@@ -25,7 +25,6 @@ module.exports = {
     },
     async deleteList(req, res, next) {
         const { listId } = req.params;
-        console.log(req.body)
         await List.findByIdAndDelete(listId)
         return res.status(200)
     },
