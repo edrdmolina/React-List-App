@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 // Components
 import Token from '../Components/Token';
-import Logo from '../Icons/Logo-SM.svg';
+import Logo from '../Icons/Logo-SM.png';
 
 // Hooks
 import useChangeInput from "../hooks/useChangeInput";
@@ -32,7 +32,7 @@ const useStyles = createUseStyles({
         maxWidth: '500px',
         borderRadius: '10px',
         boxShadow: '0 0 10px #00000070',
-        backgroundColor: '#FCFCFC12',
+        backgroundColor: '#0388A6C8',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -44,14 +44,14 @@ const useStyles = createUseStyles({
         },
 
         '& button': {
-            backgroundColor: '#4F51BC',
+            backgroundColor: '#F28705',
             color: '#FCFCFC',
             padding: '0.25rem 0.75rem',
             borderRadius: '15px',
             textTransform: 'uppercase',
 
             '&:active': {
-                backgroundColor: '#4F51BC32',
+                backgroundColor: '#F25C05',
             }
         }
     },
@@ -63,14 +63,14 @@ const useStyles = createUseStyles({
         minHeight: '4.25rem',
 
         '& input': {
-            boxShadow: '0px 0px 10px #4F51BC',
+            border: '1px solid #FCFCFC',
             color: '#FCFCFC',
             height: '2rem',
             borderRadius: '5px',
             textIndent: '1rem',
 
             '&:focus': {
-                boxShadow: '0px 0px 10px #FCFCFC',
+                boxShadow: '0px 0px 10px #F28705',
             }
         },
     },

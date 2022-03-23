@@ -4,7 +4,7 @@ import { createUseStyles } from "react-jss";
 import { Link } from 'react-router-dom';
 
 import BackgroundProp from '../Components/BackgroundProp';
-import Logo from '../Icons/Logo-SM.svg'
+import Logo from '../Icons/Logo-SM.png'
 
 // Styles
 const useStyles = createUseStyles({
@@ -16,12 +16,13 @@ const useStyles = createUseStyles({
         display: 'flex',
         justifyContent: 'space-around',
         alignItems: 'center',
+        
     },
     container: {
         border: '1px solid #FCFCFC',
-        backgroundColor: '#FCFCFC12',
+        backgroundColor: '#0388A6C8',
         borderRadius: '15px',
-        height: '300px',
+        height: '250px',
         width: '90%',
         maxWidth: '500px',
         boxShadow: '0 0 10px rgba(0,0,0,0.5)',
@@ -30,24 +31,25 @@ const useStyles = createUseStyles({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'flex-start',
+        gap: '1rem',
 
         '& h1': {
-            margin: '15% 0 2% 0',
+            marginTop: '2.5rem',
         },
 
         '& p': {
-            margin: '0rem 0 10% 0',
+            margin: '0',
             
         },
         '& a': {
             color: '#FCFCFC',
-            backgroundColor: '#4F51BC',
+            backgroundColor: '#F28705',
             padding: '0.25rem 0.75rem',
             borderRadius: '15px',
             textDecoration: 'none',
 
             '&:active': {
-                backgroundColor: '#4F51BC32',
+                backgroundColor: '#F25C05',
             }
         }
     },
@@ -61,7 +63,7 @@ const useStyles = createUseStyles({
         home: {
             flexDirection: 'column',
             justifyContent: 'start',
-
+            
             '& img': {
                 height: '100px',
                 margin: '8rem 0 5rem 0'
@@ -70,6 +72,7 @@ const useStyles = createUseStyles({
 
         container: {
             justifyContent: 'center',
+            
             '& h1': {
                 margin: '1rem',
             },

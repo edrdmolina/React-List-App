@@ -22,7 +22,7 @@ const useStyles = createUseStyles({
         left: 'calc(50% - 300px / 2)',
         height: '200px',
         width: '300px',
-        backgroundColor: '#000270',
+        backgroundColor: '#03658C',
         boxShadow: '0 0 10px #000000',
         display: 'flex',
         flexDirection: 'column',
@@ -43,13 +43,13 @@ const useStyles = createUseStyles({
 
         '& button': {
             width: '100%',
-            backgroundColor: '#C03546',
+            backgroundColor: '#F25C05',
             color: '#FCFCFC',
             height: '20%',
             borderRadius: '0 0 10px 10px',
 
             '&:hover': {
-                backgroundColor: '#C03546C8'
+                backgroundColor: '#F25C05C8'
             }
         }
 
@@ -73,7 +73,7 @@ const useStyles = createUseStyles({
             color: '#07020D',
 
             '&:focus': {
-                border: '3px solid #4F51BC'
+                border: '3px solid #F28705'
             }
         }
     }

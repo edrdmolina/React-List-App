@@ -21,7 +21,7 @@ const useStyles = createUseStyles({
         left: 'calc(50% - 330px / 2)',
         border: '1px solid #FCFCFC',
         borderRadius: '10px',
-        backgroundColor: '#C03546',
+        backgroundColor: '#F25C05',
         display: 'flex',
         flexDirection: 'column',
 
@@ -39,7 +39,7 @@ const useStyles = createUseStyles({
             color: '#FCFCFC',
 
             '&:hover': {
-                backgroundColor: '#FCFCFC52',
+                backgroundColor: '#F28705',
             }
         },
 

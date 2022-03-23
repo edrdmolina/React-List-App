@@ -19,20 +19,20 @@ const useStyles = createUseStyles({
             textAlign: 'center',
             borderRadius: '5px',
             color: '#FCFCFC',
-            boxShadow: '0 0 5px #4F51BC',
+            border: '1px solid #FCFCFC'
         },
         '& input:focus': {
-            boxShadow: '0 0 5px #FCFCFC',
+            boxShadow: '0 0 5px #F28705',
         },
 
         '& button': {
             color: '#FCFCFC',
-            backgroundColor: '#4F51BC',
+            backgroundColor: '#F28705',
             padding: '0.25rem 0.75rem',
             borderRadius: '15px',
 
             '&:active': {
-                backgroundColor: '#4F51BC32',
+                backgroundColor: '#F25C05',
             }
         }
     },

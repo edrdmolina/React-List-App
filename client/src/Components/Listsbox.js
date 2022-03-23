@@ -10,7 +10,7 @@ const useStyles = createUseStyles({
         height: '250px',
         width: '250px',
         borderRadius: '10px',
-        backgroundColor: '#FCFCFC12',
+        backgroundColor: '#0388A6C8',
         boxShadow: '0 0 10px rgba(0,0,0,0.5)',
         color: '#FCFCFC',
 
@@ -30,6 +30,7 @@ const useStyles = createUseStyles({
             height: '20%',
             paddingTop: '0.5rem',
             margin: '0',
+            textTransform: 'uppercase',
         },
 
         '& i': {
@@ -57,26 +58,28 @@ const useStyles = createUseStyles({
     },
 
     confirmation: {
-        height: '80%',
+        height: '100%',
         width: '100%',
         position: 'relative',
-        bottom: '89%',
-        borderRadius: '0 0 10px 10px',
+        borderRadius: '10px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-evenly',
         alignItems: 'center',
-        backgroundColor: '#4F51BC',
+        backgroundColor: '#03658C',
 
         '& button': {
             padding: '0.5rem 1rem',
             borderRadius: '15px',
             color: '#FCFCFC',
-            backgroundColor: '#000270',
+            backgroundColor: '#F28705',
             width: '66%',
             '&:active': {
-                backgroundColor: '#00027088',
-            }
+                backgroundColor: '#F25C05',
+            },
+            '&:hover': {
+                boxShadow: '0 0 10px rgba(0,0,0,0.5)',
+            },
         },
     },
 
@@ -111,7 +114,7 @@ const useStyles = createUseStyles({
                 alignItems: 'center',
                 padding: '0',
                 marginLeft: '1rem',
-                textTransform: 'uppercase',
+                
             },
 
             '& ul': {
@@ -124,26 +127,14 @@ const useStyles = createUseStyles({
             }
         },
         confirmation: {
-            height: '100%',
-            width: '100%',
-            position: 'relative',
-            bottom: '0%',
             borderRadius: '10px',
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-evenly',
             alignItems: 'center',
-            backgroundColor: '#4F51BC',
     
             '& button': {
-                padding: '0.5rem 1rem',
-                borderRadius: '15px',
-                color: '#FCFCFC',
-                backgroundColor: '#000270',
                 width: '35%',
-                '&:active': {
-                    backgroundColor: '#00027088',
-                }
             },
         },
     }
@@ -159,6 +150,7 @@ function Listsbox(props) {
     const [showConfirmation, toggleShowConfirmation] = useState();
 
     const toggleConfirmation = () => toggleShowConfirmation(!showConfirmation);
+        
     
     async function removeList() {
         const newLists = data.filter(l => l._id !== _id);

@@ -5,9 +5,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(116.62deg, rgba(79, 81, 188, 0.55) 15.73%, rgba(0, 2, 112, 0.65) 99.71%);
+  /* background: linear-gradient(116.62deg, rgba(79, 81, 188, 0.55) 15.73%, rgba(0, 2, 112, 0.65) 99.71%);
   background-size: 300%;
-  animation: bg-animation 10s linear 0s infinite alternate;
+  animation: bg-animation 10s linear 0s infinite alternate; */
+  background-image: url('./Images/BackgroundImage.jpg');
+  background-size: cover;
   min-height: 100vh;
   min-width: 100vw;
 }

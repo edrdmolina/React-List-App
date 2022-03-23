@@ -6,7 +6,7 @@ import axios from 'axios';
 // Components
 import Listsbox from '../Components/Listsbox';
 import AddList from '../Components/AddList';
-import Logo from '../Icons/Logo-SM.svg'
+import Logo from '../Icons/Logo-SM.png'
 
 // Styles
 const useStyles = createUseStyles({
@@ -21,6 +21,10 @@ const useStyles = createUseStyles({
         alignItems: 'center',
         gap: '2rem',
         padding: '8rem 0 5rem 0',
+
+        '& img': {
+            display: 'none',
+        }
     },
 
     '@media (max-width: 768px)': {
@@ -31,8 +35,9 @@ const useStyles = createUseStyles({
             padding: '2rem 0 6rem 0',
 
             '& img': {
+                display: 'inline',
                 height: '100px',
-                margin: '0 0 2rem 0'
+                margin: '3rem 0 2rem 0'
             }
         }
     }
@@ -54,6 +59,7 @@ function Lists(props) {
 
     function handleToggleShowForm() {
         toggleShowForm(!showForm);
+        window.scrollTo({ top: 1000, left: 0, behavior:'smooth' })
     }
 
     function addList(newList) {

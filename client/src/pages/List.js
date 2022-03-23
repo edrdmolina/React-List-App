@@ -24,7 +24,7 @@ const useStyles = createUseStyles({
         }
     },
     table: {
-        backgroundColor: '#FCFCFC1f',
+        backgroundColor: '#0388A6C8',
         borderRadius: '10px',
         boxShadow: '0px 0px 10px #00000052',
         width: '90%',
@@ -63,12 +63,12 @@ const useStyles = createUseStyles({
     deleteItemsButton: {
         margin: '0 auto',
         color: '#FCFCFC',
-        backgroundColor: '#4F51BC',
+        backgroundColor: '#F28705',
         padding: '0.25rem 0.75rem',
         borderRadius: '15px',
         
         '&:active': {
-            backgroundColor: '#4F51BC32',
+            backgroundColor: '#F25C05',
         }
     }
 })

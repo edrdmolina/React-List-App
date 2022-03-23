@@ -10,7 +10,7 @@ const useStyles = createUseStyles({
         width: '250px',
         borderRadius: '10px',
         color: 'white',
-        backgroundColor: '#FCFCFC12',
+        backgroundColor: '#0388A6C8',
         boxShadow: '0 0 10px rgba(0,0,0,0.5)',
         cursor: 'pointer',
 
@@ -36,7 +36,7 @@ const useStyles = createUseStyles({
         },
         '& input:focus': {
             borderRadius: '10px 10px 0px 0px',
-            boxShadow: 'inset 0px 0px 10px #4F51BC'
+            boxShadow: 'inset 0px 0px 10px #F28705'
         }
     },
     addIcon: {
@@ -58,12 +58,15 @@ const useStyles = createUseStyles({
             padding: '0.5rem 1rem',
             borderRadius: '15px',
             color: '#FCFCFC',
-            backgroundColor: '#4F51BC',
+            backgroundColor: '#F28705',
             width: '66%',
+            '&:hover': {
+                boxShadow: '0 0 10px rgba(0,0,0,0.5)',
+            },
+            '&:active': {
+                backgroundColor: '#F25C05',
+            }
         },
-        '& button:hover': {
-            boxShadow: '0 0 10px rgba(0,0,0,0.5)',
-        }
     },
     inputError: {
         position: 'relative',
@@ -117,7 +120,7 @@ const useStyles = createUseStyles({
 
 function AddList(props) {
     const classes = useStyles();
-    const { handleToggleShowForm, showForm, addList } = props;
+    const { handleToggleShowForm, showForm, addList, screenWidth } = props;
 
     const [title, updateTitle] = useState('');
     const [inputError, updateInputError] = useState(false);

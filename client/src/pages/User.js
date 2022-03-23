@@ -40,7 +40,7 @@ const useStyles = createUseStyles({
         justifyContent: 'space-evenly',
         borderRadius: '10px',
         boxShadow: '0 0 10px #00000070',
-        backgroundColor: '#FCFCFC12',
+        backgroundColor: '#0388A6C8',
     },
     inputGroup: {
         display: 'flex',
@@ -49,14 +49,14 @@ const useStyles = createUseStyles({
         minHeight: '4.25rem',
 
         '& input': {
-            boxShadow: '0px 0px 10px #4F51BC',
+            border: '1px solid #FCFCFC',
             color: '#FCFCFC',
             height: '2rem',
             borderRadius: '5px',
             textIndent: '1rem',
 
             '&:focus': {
-                boxShadow: '0px 0px 10px #FCFCFC',
+                boxShadow: '0px 0px 10px #F28705',
             }
         },
 
@@ -82,7 +82,7 @@ const useStyles = createUseStyles({
 
     },
     inputContainer: {
-        boxShadow: '0px 0px 10px #4F51BC',
+        border: '1px solid #FCFCFC',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -104,7 +104,7 @@ const useStyles = createUseStyles({
         width: '10%',
         cursor: 'pointer',
         height: '100%',
-        backgroundColor: '#4F51BC',
+        backgroundColor: '#F28705',
         borderRadius: '0 5px 5px 0',
         display: 'flex',
         justifyContent: 'center',
@@ -118,18 +118,18 @@ const useStyles = createUseStyles({
 
         '& button': {
             color: '#FCFCFC',
-            backgroundColor: '#4F51BC',
+            backgroundColor: '#F28705',
             padding: '0.25rem 0.75rem',
             borderRadius: '15px',
 
             '&:active': {
-                backgroundColor: '#4F51BC32',
+                backgroundColor: '#F25C05',
             }
         }
 
     },
     disabled: {
-        backgroundColor: '#0F0F0F5F !important',
+        backgroundColor: '#03658C !important',
         cursor: 'not-allowed',
     },
     inputError: {

@@ -57,3 +57,28 @@ button, input {
 body::-webkit-scrollbar {
     width: 0px;
 }
+
+/* FONTS */
+@font-face {
+	font-family: 'Gruppo';
+	src: url('./Fonts/Gruppo/Gruppo-Regular.ttf') format('truetype');
+}
+@font-face {
+	font-family: 'Roboto';
+	src: url('./Fonts/Roboto/Roboto-Regular.ttf') format('truetype');
+}
+
+h1 {
+	font-family: 'Gruppo', sans-serif;
+	font-size: 64px;
+}
+
+h2, h3, h4, h5, h6, p, button, a, label {
+	font-family: 'Roboto';
+}
+
+
+
+input {
+	font-family: 'Roboto';
+}

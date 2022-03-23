@@ -5,7 +5,7 @@ import { createUseStyles } from 'react-jss';
 import { NavLink } from 'react-router-dom';
 
 // Components
-import Logo from '../Icons/Logo-SM.svg'
+import Logo from '../Icons/Logo-SM.png';
 
 // Styles
 const useStyles = createUseStyles({
@@ -33,14 +33,18 @@ const useStyles = createUseStyles({
         '& a': {
             color: 'white',
             textDecoration: 'none',
-            margin: '0 1rem'
+            margin: '0 1rem',
+
+            '&:hover': {
+                color: '#F25C05'
+            }
         }
     },
 
     '@media (max-width: 768px)': {
         container: {
             bottom: '0',
-            backgroundColor: '#000270',
+            backgroundColor: '#F25C05',
             height: '5rem',
         },
         navLinks: {
@@ -48,15 +52,19 @@ const useStyles = createUseStyles({
             width: '100%',
             justifyContent: 'space-around',
             color: '#FCFCFC',
+            margin: '0',
 
             '& a': {
                 borderRadius: '50%',
-                padding: '0.75rem'
+                padding: '0.75rem',
+
+                '&:hover': {
+                    color: '#FCFCFC'
+                },
+                '&:active': {
+                    backgroundColor: '#FCFCFC88',
+                }
             },
-            
-            '& a:active': {
-                backgroundColor: '#FCFCFC88',
-            }
         }
     }
 
