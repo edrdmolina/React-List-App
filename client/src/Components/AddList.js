@@ -45,6 +45,7 @@ const useStyles = createUseStyles({
         justifyContent: 'center',
         alignItems: 'center',
         height: '80%',
+        fontSize: '6rem'
     },
     buttonContainer: {
         display: 'flex',
@@ -76,7 +77,41 @@ const useStyles = createUseStyles({
         to: {
             right: '3px',
         }
-    }
+    },
+    addListForm: {},
+    '@media (max-width: 768px)': {
+        addList: {
+            width: '100%',
+            maxWidth: '400px',
+            height: '5rem',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+
+            '& h3': {
+                border: 'none',
+                height: '50%',
+                width: '75%',
+                textAlign: 'start',
+                marginLeft: '1rem'
+            }
+        },
+        addIcon: {
+            width: '20%',
+            fontSize: '2rem',
+        },
+        addListForm: {
+            height: '200px',
+            flexDirection: 'column',
+            width: '100%',
+            cursor: 'auto',
+
+            '& button': {
+                width: '100%'
+            },
+        },
+    },
     
 })
 
@@ -106,7 +141,7 @@ function AddList(props) {
 
     if (showForm) {
         return (
-            <div className={`${classes.addList} ${inputError ? classes.inputError : null}`}>
+            <div className={`${classes.addList} ${classes.addListForm} ${inputError ? classes.inputError : null}`}>
                 <input type="text" value={title} onChange={handleInput} autoFocus="on" />
                 <div className={classes.buttonContainer}>
                     <button onClick={handleAddList}>ADD</button>
@@ -117,9 +152,9 @@ function AddList(props) {
     } else {
         return (
             <div onClick={handleToggleShowForm} className={classes.addList} >
-                <h3>Add List</h3>
+                <h3>ADD LIST</h3>
                 <div className={classes.addIcon}>
-                    <i className="far fa-plus-square fa-6x" />
+                    <i className="far fa-plus-square" />
                 </div>
             </div>
         )

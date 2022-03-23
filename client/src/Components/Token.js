@@ -19,7 +19,7 @@ const useStyles = createUseStyles({
     modal: {
         position: 'fixed',
         top: '30%',
-        left: 'calc(50% - 330px / 2)',
+        left: 'calc(50% - 300px / 2)',
         height: '200px',
         width: '300px',
         backgroundColor: '#000270',

@@ -6,6 +6,7 @@ import axios from 'axios';
 // Components
 import Listsbox from '../Components/Listsbox';
 import AddList from '../Components/AddList';
+import Logo from '../Icons/Logo-SM.svg'
 
 // Styles
 const useStyles = createUseStyles({
@@ -20,6 +21,20 @@ const useStyles = createUseStyles({
         alignItems: 'center',
         gap: '2rem',
         padding: '8rem 0 5rem 0',
+    },
+
+    '@media (max-width: 768px)': {
+        lists: {
+            flexDirection: 'column',
+            justifyContent: 'flex-start',
+            gap: '1rem',
+            padding: '2rem 0 6rem 0',
+
+            '& img': {
+                height: '100px',
+                margin: '0 0 2rem 0'
+            }
+        }
     }
 })
 
@@ -53,6 +68,7 @@ function Lists(props) {
 
     return (
         <div className={classes.lists}>
+            <img src={Logo} alt="Logo" className={classes.logo} />
             { lists }
             < AddList handleToggleShowForm={handleToggleShowForm} showForm={showForm} addList={addList} />
         </div>

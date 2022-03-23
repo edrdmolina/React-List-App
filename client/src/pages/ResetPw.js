@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useLocation } from 'react-router-dom'
 import axios from "axios";
 import { createUseStyles } from 'react-jss';
+import { Link } from 'react-router-dom';
 
 // Hooks
 import useChangeInput from "../hooks/useChangeInput";
@@ -10,6 +11,7 @@ import useChangeInput from "../hooks/useChangeInput";
 // Components 
 import PWConfirmation from '../Components/PWConfirmation';
 import PWValidation from "../Components/PWValidation";
+import Logo from '../Icons/Logo-SM.svg';
 
 // Styles
 const useStyles = createUseStyles({
@@ -21,6 +23,10 @@ const useStyles = createUseStyles({
         justifyContent: 'center',
         alignItems: 'center',
         color: '#FCFCFC',
+
+        '& img': {
+            display: 'none',
+        },
 
     },
     form: {
@@ -83,6 +89,18 @@ const useStyles = createUseStyles({
             fontSize: '0.75rem'
         }
     },
+    '@media (max-width: 768px)': {
+        resetPW: {
+            justifyContent: 'flex-start',
+            paddingTop: '8rem',
+
+            '& img': {
+                display: 'inline',
+                height: '100px',
+                margin: '0 0 2rem 0'
+            }
+        }
+    }
 })
 
 function ResetPw() {
@@ -133,6 +151,9 @@ function ResetPw() {
 
     return (
         <div className={classes.resetPW}>
+            <Link to='/'>
+                <img src={Logo} alt="Logo" className={classes.logo} />
+            </Link>
             <form onSubmit={handleSubmit} className={classes.form}>
                 <h1>RESET PASSWORD</h1>
                 <p>{message}</p>

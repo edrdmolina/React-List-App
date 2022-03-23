@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 
 // Components
 import Token from '../Components/Token';
-import Logo from '../Icons/Logo-SM.svg'
+import Logo from '../Icons/Logo-SM.svg';
 
 // Hooks
 import useChangeInput from "../hooks/useChangeInput";
@@ -77,6 +77,9 @@ const useStyles = createUseStyles({
 
     '@media (max-width: 768px)': {
         forgotPW: {
+            justifyContent: 'flex-start',
+            paddingTop: '8rem',
+
             '& img': {
                 display: 'inline',
                 height: '100px',

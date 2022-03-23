@@ -53,3 +53,7 @@ button, input {
 	padding: 0;
 	background: none;
 }
+
+body::-webkit-scrollbar {
+    width: 0px;
+}

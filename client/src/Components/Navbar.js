@@ -41,13 +41,22 @@ const useStyles = createUseStyles({
         container: {
             bottom: '0',
             backgroundColor: '#000270',
-            height: '4rem',
+            height: '5rem',
         },
         navLinks: {
             display: 'flex',
             width: '100%',
             justifyContent: 'space-around',
-            color: '#FCFCFC'
+            color: '#FCFCFC',
+
+            '& a': {
+                borderRadius: '50%',
+                padding: '0.75rem'
+            },
+            
+            '& a:active': {
+                backgroundColor: '#FCFCFC88',
+            }
         }
     }
 

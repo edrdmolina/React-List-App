@@ -116,6 +116,8 @@ const useStyles = createUseStyles({
         },
 
         login: {
+            justifyContent: 'flex-start',
+            paddingTop: '8rem',
             '& img': {
                 display: 'inline',
                 height: '100px',

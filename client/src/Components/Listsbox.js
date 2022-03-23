@@ -82,6 +82,70 @@ const useStyles = createUseStyles({
 
     checked: {
         textDecoration: 'line-through'
+    },
+
+    dNone: {
+        display: 'none',
+    },
+
+    '@media (max-width: 768px)': {
+        listBox: {
+            width: '100%',
+            maxWidth: '400px',
+            height: '5rem',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+
+            '& a': {
+                height: '100%',
+                width: '80%',
+            },
+
+            '& h3': {
+                border: 'none',
+                height: '100%',
+                width: '100%',
+                textAlign: 'start',
+                display: 'flex',
+                alignItems: 'center',
+                padding: '0',
+                marginLeft: '1rem',
+                textTransform: 'uppercase',
+            },
+
+            '& ul': {
+                display: 'none',
+            },
+
+            '& i': {
+                position: 'static',
+                margin: '0 auto',
+            }
+        },
+        confirmation: {
+            height: '100%',
+            width: '100%',
+            position: 'relative',
+            bottom: '0%',
+            borderRadius: '10px',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
+            alignItems: 'center',
+            backgroundColor: '#4F51BC',
+    
+            '& button': {
+                padding: '0.5rem 1rem',
+                borderRadius: '15px',
+                color: '#FCFCFC',
+                backgroundColor: '#000270',
+                width: '35%',
+                '&:active': {
+                    backgroundColor: '#00027088',
+                }
+            },
+        },
     }
 
 })
@@ -114,13 +178,13 @@ function Listsbox(props) {
     })
     return (
         <div className={classes.listBox}>
-            <Link to={`/${_id}`}  >
+            <Link to={`/${_id}`} className={showConfirmation ? classes.dNone : null} >
                 <h3>{ title }</h3>
                 <ul className={classes.preview}>
                     {preview}
                 </ul>
             </Link>
-            <i className="fas fa-times" onClick={toggleConfirmation}/>
+            <i className={`fas fa-times ${showConfirmation ? classes.dNone : null}`} onClick={toggleConfirmation}/>
             { showConfirmation ? (
                 <div className={classes.confirmation}>
                     <button onClick={removeList}>REMOVE LIST</button>
