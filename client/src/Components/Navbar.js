@@ -14,7 +14,7 @@ const useStyles = createUseStyles({
         height: '5rem',
         position: 'fixed',
         display: 'flex',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     nav: {
         width: '100%',
@@ -26,7 +26,8 @@ const useStyles = createUseStyles({
         justifyContent: 'space-between',
     },
     logo: {
-        marginLeft: '2rem'
+        marginLeft: '2rem',
+        height: '55px',
     },
     navLinks: {
         marginRight: '2rem',
@@ -53,6 +54,7 @@ const useStyles = createUseStyles({
             justifyContent: 'space-around',
             color: '#FCFCFC',
             margin: '0',
+            marginBottom: '1rem',
 
             '& a': {
                 borderRadius: '50%',
@@ -63,6 +65,9 @@ const useStyles = createUseStyles({
                 },
                 '&:active': {
                     backgroundColor: '#FCFCFC88',
+                },
+                '& i': {
+                    fontSize: '1.5rem'
                 }
             },
         }
@@ -86,13 +91,13 @@ function Navbar(props) {
                 <nav className={classes.nav}>
                     <div className={classes.navLinks}>
                         <NavLink to="/" onClick={logout}>
-                            <i className="fas fa-sign-out-alt fa-2x" />
+                            <i className="fas fa-sign-out-alt" />
                         </NavLink>
                         <NavLink to='/'>
-                            <i className="fas fa-home fa-2x" />
+                            <i className="fas fa-home" />
                         </NavLink>
                         <NavLink to='/user'>
-                            <i className="fas fa-user fa-2x" />
+                            <i className="fas fa-user" />
                         </NavLink>
                     </div>
                 </nav>

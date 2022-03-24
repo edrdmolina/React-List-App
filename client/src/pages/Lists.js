@@ -12,7 +12,6 @@ import Logo from '../Icons/Logo-SM.png'
 const useStyles = createUseStyles({
     lists: {
         width: '90%',
-        minHeight: `${window.innerHeight - 80}px`,
         maxWidth: '1200px',
         display: 'flex',
         flexFlow: 'row wrap',
@@ -20,7 +19,7 @@ const useStyles = createUseStyles({
         justifyContent: 'center',
         alignItems: 'center',
         gap: '2rem',
-        padding: '8rem 0 5rem 0',
+        paddingTop: '120px',
 
         '& img': {
             display: 'none',
@@ -32,7 +31,8 @@ const useStyles = createUseStyles({
             flexDirection: 'column',
             justifyContent: 'flex-start',
             gap: '1rem',
-            padding: '2rem 0 6rem 0',
+            padding: '0',
+            marginBottom: '100px',
 
             '& img': {
                 display: 'inline',
