@@ -71,13 +71,17 @@ const useStyles = createUseStyles({
                 }
             },
         }
+    },
+    hide: {
+        transform: 'translateY(100%)',
+        transition: 'transform 0.25s linear 0s'
     }
 
 })
 
 function Navbar(props) {
     const classes = useStyles();
-    const { user, updateUser, screenWidth } = props;
+    const { user, updateUser, screenWidth, isNavHidden } = props;
     
     async function logout() {
         await axios.get('/api/users/logout');
@@ -87,7 +91,7 @@ function Navbar(props) {
     if(screenWidth < 768 && !user.username) return <div />
     else if (screenWidth < 768) {
         return (
-            <div className={classes.container}>
+            <div className={`${classes.container} ${isNavHidden ? classes.hide : null}`}>
                 <nav className={classes.nav}>
                     <div className={classes.navLinks}>
                         <NavLink to="/" onClick={logout}>

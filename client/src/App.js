@@ -26,6 +26,7 @@ function AppRefactored() {
     const [data, updateData] = useState([]);
     const [user, updateUser] = useState({});
     const [screenWidth, updateScreenWidth] = useState(0);
+    const [isNavHidden, toggleIsNavHidden] = useState(false);
 
     useEffect( () => {
         if(!user.username) getUser();
@@ -53,12 +54,13 @@ function AppRefactored() {
     }
 
     const getScreenWidth = () => updateScreenWidth(window.innerWidth);
+    const toggleNavDisplay = () => toggleIsNavHidden(!isNavHidden);
     
     return (
         <div className={classes.app}>
-            < Navbar user={user} updateUser={updateUser} screenWidth={screenWidth} />
+            < Navbar user={user} updateUser={updateUser} screenWidth={screenWidth} isNavHidden={isNavHidden} />
             < Routes 
-                user={user} data={data} 
+                user={user} data={data} toggleNavDisplay={toggleNavDisplay}
                 updateData={updateData} getUser={getUser} 
                 getData={getData} screenWidth={screenWidth} 
             />

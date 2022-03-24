@@ -28,11 +28,12 @@ const useStyles = createUseStyles({
 
     '@media (max-width: 768px)': {
         lists: {
+            minHeight: '100vh',
             flexDirection: 'column',
             justifyContent: 'flex-start',
             gap: '1rem',
             padding: '0',
-            marginBottom: '100px',
+            marginBottom: '6rem',
 
             '& img': {
                 display: 'inline',
@@ -44,7 +45,7 @@ const useStyles = createUseStyles({
 })
 
 function Lists(props) {
-    const { data, updateData } = props;
+    const { data, updateData, toggleNavDisplay } = props;
     const classes = useStyles();
 
     const [showForm, toggleShowForm] = useState(false);
@@ -59,7 +60,8 @@ function Lists(props) {
 
     function handleToggleShowForm() {
         toggleShowForm(!showForm);
-        window.scrollTo({ top: 1000, left: 0, behavior:'smooth' })
+        toggleNavDisplay();
+        window.scrollBy({ top: window.innerHeight + 500, left: 0, behavior:'smooth' })
     }
 
     function addList(newList) {

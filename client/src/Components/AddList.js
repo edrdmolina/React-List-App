@@ -120,7 +120,7 @@ const useStyles = createUseStyles({
 
 function AddList(props) {
     const classes = useStyles();
-    const { handleToggleShowForm, showForm, addList, screenWidth } = props;
+    const { handleToggleShowForm, showForm, addList } = props;
 
     const [title, updateTitle] = useState('');
     const [inputError, updateInputError] = useState(false);
