@@ -22,7 +22,7 @@ const useStyles = createUseStyles({
             border: '1px solid #FCFCFC'
         },
         '& input:focus': {
-            boxShadow: '0 0 5px #F28705',
+            boxShadow: '0px 0px 10px #F28705',
         },
 
         '& button': {

@@ -179,7 +179,7 @@ function Listsbox(props) {
             <i className={`fas fa-times ${showConfirmation ? classes.dNone : null}`} onClick={toggleConfirmation}/>
             { showConfirmation ? (
                 <div className={classes.confirmation}>
-                    <button onClick={removeList}>REMOVE LIST</button>
+                    <button onClick={removeList}>REMOVE</button>
                     <button onClick={toggleConfirmation}>CANCEL</button>
                 </div>
             ) : (

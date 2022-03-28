@@ -81,4 +81,6 @@ h2, h3, h4, h5, h6, p, button, a, label {
 
 input {
 	font-family: 'Roboto';
+	caret-color: #FCFCFC;
+	-webkit-appearance: none;
 }

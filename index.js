@@ -69,7 +69,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 // Serve the static files from React App
-app.use(express.static(path.join(__dirname, 'client/build')));
+// app.use(express.static(path.join(__dirname, 'client/build')));
 
 
 // Routes
@@ -80,9 +80,9 @@ const userRoutes = require('./routes/users.js');
 app.use('/api/users', userRoutes);
 
 // Handles any requests that don't match the ones above
-// app.get('*', (req,res) =>{
-//   res.sendFile(path.join(__dirname+'/client/public/index.html'));
-// });
+app.get('*', (req,res) =>{
+  res.sendFile(path.join(__dirname+'/client/public/index.html'));
+});
 
 const port = process.env.PORT || 8081;
 app.listen(port, () => {

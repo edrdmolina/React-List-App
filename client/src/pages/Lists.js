@@ -15,7 +15,7 @@ const useStyles = createUseStyles({
         maxWidth: '1200px',
         display: 'flex',
         flexFlow: 'row wrap',
-        margin: '0 auto',
+        margin: '0 auto 3rem',
         justifyContent: 'center',
         alignItems: 'center',
         gap: '2rem',

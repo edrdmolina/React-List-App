@@ -23,10 +23,7 @@ const useStyles = createUseStyles({
         color: '#FCFCFC',
 
         '& p': {
-            margin: '1rem',
-            '& a': {
-                color: '#FCFCFC'
-            }
+            margin: '0',
         }
 
     },
@@ -37,16 +34,21 @@ const useStyles = createUseStyles({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'space-evenly',
+        justifyContent: 'flex-start',
         borderRadius: '10px',
         boxShadow: '0 0 10px #00000070',
         backgroundColor: '#0388A6C8',
+
+        '& h1': {
+            margin: '1rem 0'
+        }
     },
     inputGroup: {
         display: 'flex',
         flexDirection: 'column',
         width: '65%',
         minHeight: '4.25rem',
+        margin: '0.5rem 0',
 
         '& input': {
             border: '1px solid #FCFCFC',
@@ -79,6 +81,7 @@ const useStyles = createUseStyles({
         flexDirection: 'column',
         width: '65%',
         minHeight: '4.25rem',
+        margin: '0.5rem 0',
 
     },
     inputContainer: {
@@ -95,6 +98,9 @@ const useStyles = createUseStyles({
             width: '90%',
         },
     },
+    inputContainerBoxShadow: {
+        boxShadow: '0px 0px 10px #F28705 !important',
+    },
     inputLocked: {
         width: '90%',
         textIndent: '1rem',
@@ -105,7 +111,7 @@ const useStyles = createUseStyles({
         cursor: 'pointer',
         height: '100%',
         backgroundColor: '#F28705',
-        borderRadius: '0 5px 5px 0',
+        borderRadius: '0 3.5px 3.5px 0',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center'
@@ -115,6 +121,7 @@ const useStyles = createUseStyles({
         width: '65%',
         display: 'flex',
         justifyContent: 'space-evenly',
+        margin: '1rem 0',
 
         '& button': {
             color: '#FCFCFC',
@@ -126,7 +133,6 @@ const useStyles = createUseStyles({
                 backgroundColor: '#F25C05',
             }
         }
-
     },
     disabled: {
         backgroundColor: '#03658C !important',
@@ -173,6 +179,8 @@ function User(props) {
     const [isDeleteConfirmation, updateIsDeleteConfirmation] = useState(false);
     const [message, updateMessage] = useState('');
     const [isError, updateIsError] = useState(false);
+    const [isEmailFocus, updateIsEmailFocus] = useState(false);
+    const [isUsernameFocus, updateIsUsernameFocus] = useState(false);
 
     // REDIRECTS if there is no user.
     if(!user.username) window.location.href = '/error';
@@ -229,6 +237,11 @@ function User(props) {
         
     }
 
+    function updateFocus(e) {
+        if(e.target.id === 'email') updateIsEmailFocus(!isEmailFocus);
+        else if(e.target.id === 'username') updateIsUsernameFocus(!isUsernameFocus);
+    }
+
     let isDisabled = true;
         
     if (email && username && password && (newPassword === confirmNewPassword)) {
@@ -257,11 +270,13 @@ function User(props) {
                 ) : (
                     <div className={classes.inputGroupLocked}>
                         <label htmlFor='email'>Email</label>
-                        <div className={classes.inputContainer}>
+                        <div className={`${classes.inputContainer} ${isEmailFocus ? classes.inputContainerBoxShadow : null}`}>
                             <input
                                 type='email' id='email' 
                                 value={email} 
                                 onChange={updateEmail}
+                                onFocus={updateFocus}
+                                onBlur={updateFocus}
                             />
                             <div className={classes.lockContainer} onClick={toggleEmailLock}>
                                 <i className="fas fa-lock-open" />
@@ -286,11 +301,13 @@ function User(props) {
                 ) : (
                     <div className={classes.inputGroupLocked}>
                         <label htmlFor='username'>Username</label>
-                        <div className={classes.inputContainer}>
+                        <div className={`${classes.inputContainer} ${isUsernameFocus ? classes.inputContainerBoxShadow : null}`}>
                             <input
                                 type='text' id='username' 
                                 value={username} 
                                 onChange={updateUsername}
+                                onFocus={updateFocus}
+                                onBlur={updateFocus}
                             />
                             <div className={classes.lockContainer} onClick={toggleUsernameLock}>
                                 <i className="fas fa-lock-open" />

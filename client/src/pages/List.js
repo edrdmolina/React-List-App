@@ -14,13 +14,17 @@ const useStyles = createUseStyles({
         flexDirection: 'column',
         alignItems: 'center',
         color: '#FCFCFC',
-        padding: '8rem 0 5rem 0',
+        padding: '5rem 0 5rem 0',
 
-        '& h2': {
+        '& h1': {
             textTransform: 'uppercase',
-            marginBottom: '2rem',
-            width: '100%',
+            marginBottom: '1rem',
             textAlign: 'center',
+            fontSize: '3rem',
+            backgroundColor: '#F25C05',
+            padding: '0.5rem',
+            borderRadius: '10px',
+            color: '#0A0805'
         }
     },
     table: {
@@ -161,7 +165,7 @@ function Lists(props) {
 
         return (
             <div className={classes.list}>
-                <h2>{listData.title}</h2>
+                <h1>{listData.title}</h1>
                 <div className={classes.table}>
                     <div className={classes.tableHead}>
                         <div className={classes.tableRow}>

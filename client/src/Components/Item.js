@@ -8,8 +8,14 @@ import "swiper/css";
 const useStyles = createUseStyles({
     item: {
         width: '100%',
-        height: '3rem',
+        minHeight: '3rem',
         borderBottom: '1px solid #FCFCFC',
+
+
+        '& .swiper-wrapper': {
+            minHeight: '3rem',
+            alignItems: 'center'
+        },
     },
     checked: {
         textDecoration: 'line-through',
